@@ -1,0 +1,115 @@
+{\rtf1\ansi\ansicpg936\cocoartf1671\cocoasubrtf400
+{\fonttbl\f0\fnil\fcharset0 Consolas;\f1\fnil\fcharset134 PingFangSC-Regular;}
+{\colortbl;\red255\green255\blue255;\red15\green114\blue1;\red255\green255\blue255;\red38\green38\blue38;
+\red0\green0\blue0;\red40\green82\blue135;\red3\green37\blue83;}
+{\*\expandedcolortbl;;\cssrgb\c0\c50980\c0;\cssrgb\c100000\c100000\c100000;\cssrgb\c20000\c20000\c20000;
+\cssrgb\c0\c0\c0;\cssrgb\c20000\c40000\c60000;\cssrgb\c0\c20000\c40000;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww21660\viewh12220\viewkind0
+\deftab720
+\pard\pardeftab720\sl400\partightenfactor0
+
+\f0\fs28 \cf2 \cb3 \expnd0\expndtw0\kerning0
+// 
+\f1 \'b9\'b9\'d4\'ec
+\f0 \cf4 \
+\cf5 constructor(props) \{\cf4 \
+\'a0\'a0\'a0\'a0\cf6 super\cf5 (props);\cf4 \
+\'a0\'a0\'a0\'a0\cf6 this\cf5 .state = \{\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf5 isChecked:\'a0\cf6 true\cf5 ,\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf5 amout: 0\cf4 \
+\'a0\'a0\'a0\'a0\cf5 \};\cf4 \
+\'a0\'a0\'a0\'a0\cf5 XPay.setWxId(wxAppId);\cf4 \
+\'a0\'a0\'a0\'a0\cf5 XPay.setAlipayScheme(\cf7 'ap2017102209453437'\cf5 );\cf4 \
+\'a0\'a0\cf5 \}\cf4 \
+\'a0\
+\cf2 // 
+\f1 \'d6\'a7\'b8\'b6\'b2\'d9\'d7\'f7
+\f0 \cf4 \
+\'a0\'a0\cf5 pay() \{\cf4 \
+\'a0\'a0\'a0\'a0\cf6 this\cf5 .wxPay();\cf4 \
+\'a0\'a0\cf5 \}\cf4 \
+\'a0\
+\cf2 // 
+\f1 \'ce\'a2\'d0\'c5\'d6\'a7\'b8\'b6
+\f0 \cf4 \
+\'a0\'a0\cf5 wxPay = async () => \{\cf4 \
+\'a0\'a0\'a0\'a0\cf2 // if (!XPay.is) \{\cf4 \
+\'a0\'a0\'a0\'a0\cf2 //\'a0\'a0 alert('
+\f1 \'ce\'a2\'d0\'c5\'ce\'b4\'b0\'b2\'d7\'b0
+\f0 ');\cf4 \
+\'a0\'a0\'a0\'a0\cf2 //\'a0\'a0 return;\cf4 \
+\'a0\'a0\'a0\'a0\cf2 // \}\cf4 \
+\'a0\'a0\'a0\'a0\cf6 if\cf4 \'a0\cf5 (\cf6 this\cf5 .state.amout <= 0) \{\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf5 ToastUtil.center(\cf7 '
+\f1 \'c7\'eb\'ca\'e4\'c8\'eb\'bd\'f0\'b6\'ee
+\f0 '\cf5 );\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf6 return\cf5 ;\cf4 \
+\'a0\'a0\'a0\'a0\cf5 \}\cf4 \
+\'a0\'a0\'a0\'a0\cf5 let params = \{\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf5 userType:\'a0\cf7 'WORKER'\cf5 ,\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf5 payType:\'a0\cf7 'WECHAT_PAY'\cf5 ,\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf5 payMoney:\'a0\cf6 this\cf5 .state.amout * 100\'a0\cf2 //
+\f1 \'d1\'ba\'bd\'f0\'bd\'f0\'b6\'ee
+\f0 \cf4 \
+\'a0\'a0\'a0\'a0\cf5 \};\cf4 \
+\'a0\'a0\'a0\'a0\cf5 FetchUtils.post(`$\{API_MASTER_VERSION\}/worker/payDeposit`, params)\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 // eslint-disable-next-line no-unused-vars\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf5 .then((result) => \{\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf6 if\cf4 \'a0\cf5 (result.code === 2000) \{\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 let param = JSON.parse(result.data);\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf6 this\cf5 .orderNo = param.orderno;\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 let payParams = \{\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 appid: param.appid,\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 partnerId: param.partnerid,\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 prepayId: param.prepayid,\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 packageValue: param.package,\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 nonceStr: param.noncestr,\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 timeStamp: param.timeStamp,\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 sign: param.sign\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \};\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 XPay.setWxId(param.appid);\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 XPay.wxPay(payParams, (res) => \{\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 // console.log('
+\f1 \'ce\'a2\'d0\'c5\'d6\'a7\'b8\'b6\'bb\'d8\'b5\'f7
+\f0 ', res);\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 const \{ errCode \} = res;\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf6 if\cf4 \'a0\cf5 (errCode === 0 || errCode ===\'a0\cf7 '0'\cf5 ) \{\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 ToastUtil.center(\cf7 '
+\f1 \'b3\'e4\'d6\'b5\'b3\'c9\'b9\'a6
+\f0 '\cf5 );\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf6 this\cf5 .props.getIntegrityInfo();\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf6 this\cf5 .props.navigation.goBack();\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \}\'a0\cf6 else\cf4 \'a0\cf6 if\cf4 \'a0\cf5 (errCode === 1 || errCode ===\'a0\cf7 '1'\cf5 ) \{\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 //
+\f1 \'d3\'c9\'d3\'da
+\f0 APP
+\f1 \'b1\'bb\'b7\'e2\'bd\'fb\'c3\'bb\'d3\'d0\'bb\'d8\'b5\'f7\'bd\'e1\'b9\'fb\'a3\'ac\'d0\'e8\'d2\'aa\'d6\'f7\'b6\'af\'b2\'e9\'d1\'af\'d6\'a7\'b8\'b6\'bd\'e1\'b9\'fb
+\f0 \cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 FetchUtils.post(`$\{API_MASTER_VERSION\}/worker/payResult`, \{ orderNo:\'a0\cf6 this\cf5 .orderNo \})\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 .then((returnResult) => \{\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf6 if\cf4 \'a0\cf5 (returnResult.code === 2000) \{\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf6 if\cf4 \'a0\cf5 (returnResult.data === 0) \{\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 ToastUtil.center(\cf7 '
+\f1 \'b3\'e4\'d6\'b5\'b3\'c9\'b9\'a6
+\f0 '\cf5 );\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf6 this\cf5 .props.getIntegrityInfo();\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf6 this\cf5 .props.navigation.goBack();\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \}\'a0\cf6 else\cf4 \'a0\cf5 \{\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 ToastUtil.center(\cf7 '
+\f1 \'b3\'e4\'d6\'b5\'ca\'a7\'b0\'dc
+\f0 '\cf5 );\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \}\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \}\'a0\cf6 else\cf4 \'a0\cf5 \{\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 ToastUtil.center(returnResult.desc);\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \}\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \})\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 .\cf6 catch\cf5 (() => \{\});\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \}\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \});\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \}\'a0\cf6 else\cf4 \'a0\cf5 \{\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 ToastUtil.center(result.desc);\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \}\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \})\cf4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf5 .\cf6 catch\cf5 (() => \{\});\cf4 \
+\'a0\'a0\cf5 \};\cf4 \
+}
