@@ -1,0 +1,901 @@
+{\rtf1\ansi\ansicpg936\cocoartf1671\cocoasubrtf400
+{\fonttbl\f0\fnil\fcharset0 Consolas;\f1\fnil\fcharset134 PingFangSC-Regular;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red255\green255\blue255;\red3\green37\blue83;
+\red38\green38\blue38;\red15\green114\blue1;\red40\green82\blue135;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;\cssrgb\c100000\c100000\c100000;\cssrgb\c0\c20000\c40000;
+\cssrgb\c20000\c20000\c20000;\cssrgb\c0\c50980\c0;\cssrgb\c20000\c40000\c60000;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww21660\viewh12220\viewkind0
+\deftab720
+\pard\pardeftab720\sl400\partightenfactor0
+
+\f0\fs28 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 import \{ DeviceEventEmitter, NativeModules, Platform \} from\'a0\cf4 \strokec4 'react-native'\cf2 \strokec2 ;\cf5 \strokec5 \
+\'a0\
+\cf2 \strokec2 const \{ JPushModule \} = NativeModules;\cf5 \strokec5 \
+\'a0\
+\cf2 \strokec2 const listeners = \{\};\cf5 \strokec5 \
+\cf2 \strokec2 const receiveCustomMsgEvent =\'a0\cf4 \strokec4 'receivePushMsg'\cf2 \strokec2 ;\cf5 \strokec5 \
+\cf2 \strokec2 const receiveNotificationEvent =\'a0\cf4 \strokec4 'receiveNotification'\cf2 \strokec2 ;\cf5 \strokec5 \
+\cf2 \strokec2 const openNotificationEvent =\'a0\cf4 \strokec4 'openNotification'\cf2 \strokec2 ;\cf5 \strokec5 \
+\cf2 \strokec2 const connectionChangeEvent =\'a0\cf4 \strokec4 'connectionChange'\cf2 \strokec2 ;\cf5 \strokec5 \
+\'a0\
+\cf2 \strokec2 const getRegistrationIdEvent =\'a0\cf4 \strokec4 'getRegistrationId'\cf2 \strokec2 ;\'a0\cf6 \strokec6 // Android Only\cf5 \strokec5 \
+\cf2 \strokec2 const openNotificationLaunchAppEvent =\'a0\cf4 \strokec4 'openNotificationLaunchApp'\cf2 \strokec2 ;\'a0\cf6 \strokec6 // iOS Only\cf5 \strokec5 \
+\cf2 \strokec2 const networkDidLogin =\'a0\cf4 \strokec4 'networkDidLogin'\cf2 \strokec2 ;\'a0\cf6 \strokec6 // iOS Only\cf5 \strokec5 \
+\cf2 \strokec2 const receiveExtrasEvent =\'a0\cf4 \strokec4 'receiveExtras'\cf2 \strokec2 ;\'a0\cf6 \strokec6 // Android Only\cf5 \strokec5 \
+\'a0\
+\cf2 \strokec2 export\'a0\cf7 \strokec7 default\cf5 \strokec5 \'a0\cf2 \strokec2 class JPush \{\cf5 \strokec5 \
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'b3\'f5\'ca\'bc\'bb\'af
+\f0 JPush 
+\f1 \'b1\'d8\'d0\'eb\'cf\'c8\'b3\'f5\'ca\'bc\'bb\'af\'b2\'c5\'c4\'dc\'d6\'b4\'d0\'d0\'c6\'e4\'cb\'fb\'b2\'d9\'d7\'f7
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static initPush() \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf5 \strokec5 \'a0\cf2 \strokec2 (Platform.OS ===\'a0\cf4 \strokec4 'android'\cf2 \strokec2 ) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.initPush();\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\'a0\cf7 \strokec7 else\cf5 \strokec5 \'a0\cf2 \strokec2 \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 JPush.setupPush();\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'cd\'a3\'d6\'b9\'cd\'c6\'cb\'cd\'a3\'ac\'b5\'f7\'d3\'c3\'b8\'c3\'b7\'bd\'b7\'a8\'ba\'f3\'bd\'ab\'b2\'bb\'d4\'d9\'ca\'dc\'b5\'bd\'cd\'c6\'cb\'cd
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static stopPush() \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.stopPush();\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c5\'d0\'b6\'cf\'ca\'c7\'b7\'f1\'b3\'c9\'b9\'a6\'ca\'da\'c8\'a8\'cd\'c6\'cb\'cd\'a3\'a8\'bb\'f2\'ca\'c7\'b7\'f1\'d4\'da\'c9\'e8\'d6\'c3\'d6\'d0\'b3\'c9\'b9\'a6\'bf\'aa\'c6\'f4\'cd\'c6\'cb\'cd\'b9\'a6\'c4\'dc\'a3\'a9
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 *\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{Function\} cb\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static hasPermission(cb) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.hasPermission((res) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 cb(res);\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'bb\'d6\'b8\'b4\'cd\'c6\'cb\'cd\'b9\'a6\'c4\'dc\'a3\'ac\'cd\'a3\'d6\'b9\'cd\'c6\'cb\'cd\'ba\'f3\'a3\'ac\'bf\'c9\'b5\'f7\'d3\'c3\'b8\'c3\'b7\'bd\'b7\'a8\'d6\'d8\'d0\'c2\'bb\'f1\'b5\'c3\'cd\'c6\'cb\'cd\'c4\'dc\'c1\'a6
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static resumePush() \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf5 \strokec5 \'a0\cf2 \strokec2 (Platform.OS ===\'a0\cf4 \strokec4 'android'\cf2 \strokec2 ) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.resumePush();\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\'a0\cf7 \strokec7 else\cf5 \strokec5 \'a0\cf2 \strokec2 \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 JPush.setupPush();\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * Android Only\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static crashLogOFF() \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.crashLogOFF();\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * Android Only\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static crashLogON() \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.crashLogON();\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * Android Only\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 *\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{Function\} cb\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static notifyJSDidLoad(cb) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.notifyJSDidLoad((resultCode) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 cb(resultCode);\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c7\'e5\'b3\'fd\'cd\'a8\'d6\'aa\'c0\'b8\'b5\'c4\'cb\'f9\'d3\'d0\'cd\'a8\'d6\'aa
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static clearAllNotifications() \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf5 \strokec5 \'a0\cf2 \strokec2 (Platform.OS ===\'a0\cf4 \strokec4 'android'\cf2 \strokec2 ) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.clearAllNotifications();\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\'a0\cf7 \strokec7 else\cf5 \strokec5 \'a0\cf2 \strokec2 \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 JPush.setBadge(0, () => \{\});\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * Android Only.\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c9\'be\'b3\'fd\'cd\'a8\'d6\'aa\'c0\'b8\'d6\'b8\'b6\'a8\'b5\'c4\'cd\'c6\'cb\'cd\'a1\'a3
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static clearNotificationById(id) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf5 \strokec5 \'a0\cf2 \strokec2 (Platform.OS ===\'a0\cf4 \strokec4 'android'\cf2 \strokec2 ) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.clearNotificationById(id);\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\'a0\cf7 \strokec7 else\cf5 \strokec5 \'a0\cf2 \strokec2 \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf6 \strokec6 // console.warn('iOS 
+\f1 \'c3\'bb\'d3\'d0\'cc\'e1\'b9\'a9\'b8\'c3\'b7\'bd\'b7\'a8\'a3\'a1
+\f0 ');\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * Android Only\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static getInfo(cb) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.getInfo((map) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 cb(map);\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'bb\'f1\'c8\'a1\'b5\'b1\'c7\'b0\'c1\'ac\'bd\'d3\'d7\'b4\'cc\'ac
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{Fucntion\} cb = (Boolean) => \{\}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c8\'e7\'b9\'fb\'c1\'ac\'bd\'d3\'d7\'b4\'cc\'ac\'b1\'e4\'b8\'fc\'ce\'aa\'d2\'d1\'c1\'ac\'bd\'d3\'b7\'b5\'bb\'d8
+\f0  true\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c8\'e7\'b9\'fb\'c1\'ac\'bd\'d3\'d7\'b4\'cc\'ac\'b1\'e4\'b8\'fc\'ce\'aa\'b6\'cf\'bf\'aa\'c1\'ac\'bd\'d3\'c1\'ac\'bd\'d3\'b7\'b5\'bb\'d8
+\f0  false\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static getConnectionState(cb) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.getConnectionState((state) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 cb(state);\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'d6\'d8\'d0\'c2\'c9\'e8\'d6\'c3
+\f0  Tag\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 *\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{Array\} tags = [String]\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{Function\} cb = (result) => \{\'a0 \}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c8\'e7\'b9\'fb\'b3\'c9\'b9\'a6
+\f0  result = \{tags: [String]\}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c8\'e7\'b9\'fb\'ca\'a7\'b0\'dc
+\f0  result = \{errorCode: Int\}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static setTags(tags, cb) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.setTags(tags, (result) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 cb(result);\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'d4\'da\'d4\'ad\'d3\'d0
+\f0  tags 
+\f1 \'b5\'c4\'bb\'f9\'b4\'a1\'c9\'cf\'cc\'ed\'bc\'d3
+\f0  tags\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 *\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{Array\} tags = [String]\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{Function\} cb = (result) => \{\'a0 \}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c8\'e7\'b9\'fb\'b3\'c9\'b9\'a6
+\f0  result = \{tags: [String]\}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c8\'e7\'b9\'fb\'ca\'a7\'b0\'dc
+\f0  result = \{errorCode: Int\}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static addTags(tags, cb) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.addTags(tags, (result) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 cb(result);\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c9\'be\'b3\'fd\'d6\'b8\'b6\'a8\'b5\'c4
+\f0  tags\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 *\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{Array\} tags = [String]\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{Function\} cb = (result) => \{\'a0 \}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c8\'e7\'b9\'fb\'b3\'c9\'b9\'a6
+\f0  result = \{tags: [String]\}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c8\'e7\'b9\'fb\'ca\'a7\'b0\'dc
+\f0  result = \{errorCode: Int\}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 *\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static deleteTags(tags, cb) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.deleteTags(tags, (result) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 cb(result);\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c7\'e5\'bf\'d5\'cb\'f9\'d3\'d0
+\f0  tags\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 *\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{Function\} cb = (result) => \{ \}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c8\'e7\'b9\'fb\'b3\'c9\'b9\'a6
+\f0  result = \{tags: [String]\}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c8\'e7\'b9\'fb\'ca\'a7\'b0\'dc
+\f0  result = \{errorCode: Int\}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 *\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static cleanTags(cb) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.cleanTags((result) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 cb(result);\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'bb\'f1\'c8\'a1\'cb\'f9\'d3\'d0\'d2\'d1\'d3\'d0\'b1\'ea\'c7\'a9
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 *\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{Function\} cb = (result) => \{ \}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c8\'e7\'b9\'fb\'b3\'c9\'b9\'a6
+\f0  result = \{tags: [String]\}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c8\'e7\'b9\'fb\'ca\'a7\'b0\'dc
+\f0  result = \{errorCode: Int\}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 *\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static getAllTags(cb) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.getAllTags((result) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 cb(result);\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'bc\'ec\'b2\'e9\'b5\'b1\'c7\'b0\'c9\'e8\'b1\'b8\'ca\'c7\'b7\'f1\'b0\'f3\'b6\'a8\'b8\'c3
+\f0  tag\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 *\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{String\} tag\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{Function\} cb = (result) => \{ \}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c8\'e7\'b9\'fb\'b3\'c9\'b9\'a6
+\f0  result = \{isBind: true\}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c8\'e7\'b9\'fb\'ca\'a7\'b0\'dc
+\f0  result = \{errorCode: Int\}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 *\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static checkTagBindState(tag, cb) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.checkTagBindState(tag, (result) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 cb(result);\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'d6\'d8\'d6\'c3
+\f0  alias\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{String\} alias\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{Function\} cb = (result) => \{ \}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c8\'e7\'b9\'fb\'b3\'c9\'b9\'a6
+\f0  result = \{alias: String\}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c8\'e7\'b9\'fb\'ca\'a7\'b0\'dc
+\f0  result = \{errorCode: Int\}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 *\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static setAlias(alias, cb) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.setAlias(alias, (result) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 cb(result);\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c9\'be\'b3\'fd\'d4\'ad\'d3\'d0
+\f0  alias\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 *\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{Function\} cb = (result) => \{ \}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c8\'e7\'b9\'fb\'b3\'c9\'b9\'a6
+\f0  result = \{alias: String\}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c8\'e7\'b9\'fb\'ca\'a7\'b0\'dc
+\f0  result = \{errorCode: Int\}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 *\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static deleteAlias(cb) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.deleteAlias((result) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 cb(result);\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'bb\'f1\'c8\'a1\'b5\'b1\'c7\'b0\'c9\'e8\'b1\'b8
+\f0  alias\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 *\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{Function\} cb = (result) => \{ \}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c8\'e7\'b9\'fb\'b3\'c9\'b9\'a6
+\f0  result = \{alias: String\}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c8\'e7\'b9\'fb\'ca\'a7\'b0\'dc
+\f0  result = \{errorCode: Int\}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 *\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static getAlias(cb) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.getAlias((map) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 cb(map);\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * Android Only\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static setStyleBasic() \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.setStyleBasic();\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * Android Only\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static setStyleCustom() \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.setStyleCustom();\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * Android Only\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static setLatestNotificationNumber(maxNumber) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf5 \strokec5 \'a0\cf2 \strokec2 (Platform.OS ===\'a0\cf4 \strokec4 'android'\cf2 \strokec2 ) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.setLatestNotificationNumber(maxNumber);\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * Android Only\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{object\} config = \{"startTime": String, "endTime": String\}\'a0 // 
+\f1 \'c0\'fd\'c8\'e7\'a3\'ba
+\f0 \{startTime: "20:30", endTime: "8:30"\}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static setSilenceTime(config) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf5 \strokec5 \'a0\cf2 \strokec2 (Platform.OS ===\'a0\cf4 \strokec4 'android'\cf2 \strokec2 ) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.setSilenceTime(config);\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * Android Only\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{object\} config = \{"days": Array, "startHour": Number, "endHour": Number\}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * // 
+\f1 \'c0\'fd\'c8\'e7\'a3\'ba
+\f0 \{days: [0, 6], startHour: 8, endHour: 23\} 
+\f1 \'b1\'ed\'ca\'be\'d0\'c7\'c6\'da\'cc\'ec\'ba\'cd\'d0\'c7\'c6\'da\'c1\'f9\'b5\'c4\'c9\'cf\'ce\'e7
+\f0  8 
+\f1 \'b5\'e3\'b5\'bd\'cd\'ed\'c9\'cf
+\f0  11 
+\f1 \'b5\'e3\'b6\'bc\'bf\'c9\'d2\'d4\'cd\'c6\'cb\'cd
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static setPushTime(config) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf5 \strokec5 \'a0\cf2 \strokec2 (Platform.OS ===\'a0\cf4 \strokec4 'android'\cf2 \strokec2 ) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.setPushTime(config);\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * Android Only\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static setGeofenceInterval(interval) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf5 \strokec5 \'a0\cf2 \strokec2 (Platform.OS ===\'a0\cf4 \strokec4 'android'\cf2 \strokec2 ) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.setGeofenceInterval(interval);\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * Android Only\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static setMaxGeofenceNumber(maxNumber) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.setMaxGeofenceNumber(maxNumber);\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * Android Only\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static jumpToPushActivity(activityName) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.jumpToPushActivity(activityName);\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * Android Only\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static jumpToPushActivityWithParams(activityName, map) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.jumpToPushActivityWithParams(activityName, map);\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * Android Only\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static finishActivity() \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.finishActivity();\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'bc\'e0\'cc\'fd\'a3\'ba\'d7\'d4\'b6\'a8\'d2\'e5\'cf\'fb\'cf\'a2\'ba\'f3\'ca\'c2\'bc\'fe
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{Function\} cb = (Object) => \{ \}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static addReceiveCustomMsgListener(cb) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 listeners[cb] = DeviceEventEmitter.addListener(receiveCustomMsgEvent, (message) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 cb(message);\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c8\'a1\'cf\'fb\'bc\'e0\'cc\'fd\'a3\'ba\'d7\'d4\'b6\'a8\'d2\'e5\'cf\'fb\'cf\'a2\'ba\'f3\'ca\'c2\'bc\'fe
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{Function\} cb = (Object) => \{ \}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static removeReceiveCustomMsgListener(cb) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf5 \strokec5 \'a0\cf2 \strokec2 (!listeners[cb]) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 return\cf2 \strokec2 ;\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 listeners[cb].remove();\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 listeners[cb] =\'a0\cf7 \strokec7 null\cf2 \strokec2 ;\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * iOS Only\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'b5\'e3\'bb\'f7\'cd\'c6\'cb\'cd\'c6\'f4\'b6\'af\'d3\'a6\'d3\'c3\'b5\'c4\'ca\'b1\'ba\'f2\'d4\'ad\'c9\'fa\'bb\'e1\'bd\'ab\'b8\'c3
+\f0  notification 
+\f1 \'bb\'ba\'b4\'e6\'c6\'f0\'c0\'b4\'a3\'ac\'b8\'c3\'b7\'bd\'b7\'a8\'d3\'c3\'d3\'da\'bb\'f1\'c8\'a1\'bb\'ba\'b4\'e6
+\f0  notification\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'d7\'a2\'d2\'e2\'a3\'ba
+\f0 notification 
+\f1 \'bf\'c9\'c4\'dc\'ca\'c7
+\f0  remoteNotification 
+\f1 \'ba\'cd
+\f0  localNotification
+\f1 \'a3\'ac\'c1\'bd\'d6\'d6\'cd\'c6\'cb\'cd\'d7\'d6\'b6\'ce\'b2\'bb\'d2\'bb\'d1\'f9\'a1\'a3
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c8\'e7\'b9\'fb\'b2\'bb\'ca\'c7\'cd\'a8\'b9\'fd\'b5\'e3\'bb\'f7\'cd\'c6\'cb\'cd\'c6\'f4\'b6\'af\'d3\'a6\'d3\'c3\'a3\'ac\'b1\'c8\'c8\'e7\'b5\'e3\'bb\'f7\'d3\'a6\'d3\'c3
+\f0  icon 
+\f1 \'d6\'b1\'bd\'d3\'c6\'f4\'b6\'af\'d3\'a6\'d3\'c3\'a3\'ac
+\f0 notification 
+\f1 \'bb\'e1\'b7\'b5\'bb\'d8
+\f0  undefine
+\f1 \'a1\'a3
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{Function\} cb = (notification) => \{\}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static getLaunchAppNotification(cb) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.getLaunchAppNotification(cb);\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @deprecated Since version 2.2.0, will deleted in 3.0.0.\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * iOS Only\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'bc\'e0\'cc\'fd\'a3\'ba\'d3\'a6\'d3\'c3\'c3\'bb\'d3\'d0\'c6\'f4\'b6\'af\'b5\'c4\'d7\'b4\'cc\'ac\'b5\'e3\'bb\'f7\'cd\'c6\'cb\'cd\'b4\'f2\'bf\'aa\'d3\'a6\'d3\'c3
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'d7\'a2\'d2\'e2\'a3\'ba
+\f0 2.2.0 
+\f1 \'b0\'e6\'b1\'be\'bf\'aa\'ca\'bc\'a3\'ac\'cc\'e1\'b9\'a9\'c1\'cb
+\f0  getLaunchAppNotification\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 *\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{Function\} cb = (notification) => \{\}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static addOpenNotificationLaunchAppListener(cb) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 listeners[cb] = DeviceEventEmitter.addListener(openNotificationLaunchAppEvent, (registrationId) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 cb(registrationId);\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @deprecated Since version 2.2.0, will deleted in 3.0.0.\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * iOS Only\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c8\'a1\'cf\'fb\'bc\'e0\'cc\'fd\'a3\'ba\'d3\'a6\'d3\'c3\'c3\'bb\'d3\'d0\'c6\'f4\'b6\'af\'b5\'c4\'d7\'b4\'cc\'ac\'b5\'e3\'bb\'f7\'cd\'c6\'cb\'cd\'b4\'f2\'bf\'aa\'d3\'a6\'d3\'c3
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{Function\} cb = () => \{\}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static removeOpenNotificationLaunchAppEventListener(cb) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf5 \strokec5 \'a0\cf2 \strokec2 (!listeners[cb]) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 return\cf2 \strokec2 ;\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 listeners[cb].remove();\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 listeners[cb] =\'a0\cf7 \strokec7 null\cf2 \strokec2 ;\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * iOS Only\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 *\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'bc\'e0\'cc\'fd\'a3\'ba\'d3\'a6\'d3\'c3\'c1\'ac\'bd\'d3\'d2\'d1\'b5\'c7\'c2\'bc
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{Function\} cb = () => \{\}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static addnetworkDidLoginListener(cb) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 listeners[cb] = DeviceEventEmitter.addListener(networkDidLogin, (registrationId) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 cb(registrationId);\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * iOS Only\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 *\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c8\'a1\'cf\'fb\'bc\'e0\'cc\'fd\'a3\'ba\'d3\'a6\'d3\'c3\'c1\'ac\'bd\'d3\'d2\'d1\'b5\'c7\'c2\'bc
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{Function\} cb = () => \{\}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static removenetworkDidLoginListener(cb) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf5 \strokec5 \'a0\cf2 \strokec2 (!listeners[cb]) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 return\cf2 \strokec2 ;\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 listeners[cb].remove();\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 listeners[cb] =\'a0\cf7 \strokec7 null\cf2 \strokec2 ;\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'bc\'e0\'cc\'fd\'a3\'ba\'bd\'d3\'ca\'d5\'cd\'c6\'cb\'cd\'ca\'c2\'bc\'fe
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{\} cb = (Object
+\f1 \'a3\'a9
+\f0 => \{\}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static addReceiveNotificationListener(cb) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 listeners[cb] = DeviceEventEmitter.addListener(receiveNotificationEvent, (map) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 cb(map);\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c8\'a1\'cf\'fb\'bc\'e0\'cc\'fd\'a3\'ba\'bd\'d3\'ca\'d5\'cd\'c6\'cb\'cd\'ca\'c2\'bc\'fe
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{Function\} cb = (Object
+\f1 \'a3\'a9
+\f0 => \{\}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static removeReceiveNotificationListener(cb) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf5 \strokec5 \'a0\cf2 \strokec2 (!listeners[cb]) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 return\cf2 \strokec2 ;\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 listeners[cb].remove();\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 listeners[cb] =\'a0\cf7 \strokec7 null\cf2 \strokec2 ;\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'bc\'e0\'cc\'fd\'a3\'ba\'b5\'e3\'bb\'f7\'cd\'c6\'cb\'cd\'ca\'c2\'bc\'fe
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{Function\} cb\'a0 = (Object
+\f1 \'a3\'a9
+\f0 => \{\}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static addReceiveOpenNotificationListener(cb) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 listeners[cb] = DeviceEventEmitter.addListener(openNotificationEvent, (message) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 cb(message);\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c8\'a1\'cf\'fb\'bc\'e0\'cc\'fd\'a3\'ba\'b5\'e3\'bb\'f7\'cd\'c6\'cb\'cd\'ca\'c2\'bc\'fe
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{Function\} cb\'a0 = (Object
+\f1 \'a3\'a9
+\f0 => \{\}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static removeReceiveOpenNotificationListener(cb) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf5 \strokec5 \'a0\cf2 \strokec2 (!listeners[cb]) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 return\cf2 \strokec2 ;\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 listeners[cb].remove();\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 listeners[cb] =\'a0\cf7 \strokec7 null\cf2 \strokec2 ;\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * Android Only\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 *\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * If device register succeed, the server will return registrationId\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static addGetRegistrationIdListener(cb) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 listeners[cb] = DeviceEventEmitter.addListener(getRegistrationIdEvent, (registrationId) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 cb(registrationId);\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * Android Only\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static removeGetRegistrationIdListener(cb) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf5 \strokec5 \'a0\cf2 \strokec2 (!listeners[cb]) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 return\cf2 \strokec2 ;\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 listeners[cb].remove();\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 listeners[cb] =\'a0\cf7 \strokec7 null\cf2 \strokec2 ;\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'bc\'e0\'cc\'fd\'a3\'ba\'c1\'ac\'bd\'d3\'d7\'b4\'cc\'ac\'b1\'e4\'b8\'fc
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{Function\} cb = (Boolean) => \{ \}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c8\'e7\'b9\'fb\'c1\'ac\'bd\'d3\'d7\'b4\'cc\'ac\'b1\'e4\'b8\'fc\'ce\'aa\'d2\'d1\'c1\'ac\'bd\'d3\'b7\'b5\'bb\'d8
+\f0  true\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c8\'e7\'b9\'fb\'c1\'ac\'bd\'d3\'d7\'b4\'cc\'ac\'b1\'e4\'b8\'fc\'ce\'aa\'b6\'cf\'bf\'aa\'c1\'ac\'bd\'d3\'c1\'ac\'bd\'d3\'b7\'b5\'bb\'d8
+\f0  false\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static addConnectionChangeListener(cb) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 listeners[cb] = DeviceEventEmitter.addListener(connectionChangeEvent, (state) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 cb(state);\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'bc\'e0\'cc\'fd\'a3\'ba\'c1\'ac\'bd\'d3\'d7\'b4\'cc\'ac\'b1\'e4\'b8\'fc
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{Function\} cb = (Boolean) => \{ \}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c8\'e7\'b9\'fb\'c1\'ac\'bd\'d3\'d7\'b4\'cc\'ac\'b1\'e4\'b8\'fc\'ce\'aa\'d2\'d1\'c1\'ac\'bd\'d3\'b7\'b5\'bb\'d8
+\f0  true\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c8\'e7\'b9\'fb\'c1\'ac\'bd\'d3\'d7\'b4\'cc\'ac\'b1\'e4\'b8\'fc\'ce\'aa\'b6\'cf\'bf\'aa\'c1\'ac\'bd\'d3\'c1\'ac\'bd\'d3\'b7\'b5\'bb\'d8
+\f0  false\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static removeConnectionChangeListener(cb) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf5 \strokec5 \'a0\cf2 \strokec2 (!listeners[cb]) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 return\cf2 \strokec2 ;\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 listeners[cb].remove();\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 listeners[cb] =\'a0\cf7 \strokec7 null\cf2 \strokec2 ;\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'bc\'e0\'cc\'fd\'a3\'ba\'ca\'d5\'b5\'bd
+\f0  Native 
+\f1 \'cf\'c2\'b7\'a2\'b5\'c4
+\f0  extra 
+\f1 \'ca\'c2\'bc\'fe
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{Function\} cb = (map) => \{ \}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'b7\'b5\'bb\'d8
+\f0  Object
+\f1 \'a3\'ac\'ca\'f4\'d0\'d4\'ba\'cd\'d6\'b5\'d4\'da
+\f0  Native 
+\f1 \'b6\'a8\'d2\'e5
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static addReceiveExtrasListener(cb) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 listeners[cb] = DeviceEventEmitter.addListener(receiveExtrasEvent, (map) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 cb(map);\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf2 \strokec2 static removeReceiveExtrasListener(cb) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf5 \strokec5 \'a0\cf2 \strokec2 (!listeners[cb]) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 return\cf2 \strokec2 ;\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 listeners[cb].remove();\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 listeners[cb] =\'a0\cf7 \strokec7 null\cf2 \strokec2 ;\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'bb\'f1\'c8\'a1
+\f0  RegistrationId\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{Function\} cb = (String) => \{ \}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static getRegistrationID(cb) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.getRegistrationID((id) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 cb(id);\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * iOS Only\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'b3\'f5\'ca\'bc\'bb\'af
+\f0  JPush SDK 
+\f1 \'b4\'fa\'c2\'eb
+\f0 ,\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * NOTE: 
+\f1 \'c8\'e7\'b9\'fb\'d2\'d1\'be\'ad\'d4\'da\'d4\'ad\'c9\'fa
+\f0  SDK 
+\f1 \'d6\'d0\'cc\'ed\'bc\'d3\'b3\'f5\'ca\'bc\'bb\'af\'b4\'fa\'c2\'eb\'d4\'f2\'ce\'de\'d0\'e8\'d4\'d9\'b5\'f7\'d3\'c3
+\f0  
+\f1 \'a3\'a8\'cd\'a8\'b9\'fd\'bd\'c5\'b1\'be\'c5\'e4\'d6\'c3\'a3\'ac\'bb\'e1\'d7\'d4\'b6\'af\'d4\'da\'d4\'ad\'c9\'fa\'d6\'d0\'cc\'ed\'bc\'d3\'b3\'f5\'ca\'bc\'bb\'af\'a3\'ac\'ce\'de\'d0\'e8\'b6\'ee\'cd\'e2\'b5\'f7\'d3\'c3\'a3\'a9
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static setupPush() \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.setupPush();\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * iOS Only\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{Function\} cb = (String) => \{ \} // 
+\f1 \'b7\'b5\'bb\'d8
+\f0  appKey\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static getAppkeyWithcallback(cb) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.getAppkeyWithcallback((appkey) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 cb(appkey);\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * iOS Only\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{Function\} cb = (int) => \{ \} // 
+\f1 \'b7\'b5\'bb\'d8\'d3\'a6\'d3\'c3
+\f0  icon badge
+\f1 \'a1\'a3
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static getBadge(cb) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.getApplicationIconBadge((badge) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 cb(badge);\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * iOS Only\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c9\'e8\'d6\'c3\'b1\'be\'b5\'d8\'cd\'c6\'cb\'cd
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{Number\} date\'a0 
+\f1 \'b4\'a5\'b7\'a2\'b1\'be\'b5\'d8\'cd\'c6\'cb\'cd\'b5\'c4\'ca\'b1\'bc\'e4\'b5\'c4\'ca\'b1\'bc\'e4\'b4\'c1
+\f0 (
+\f1 \'ba\'c1\'c3\'eb
+\f0 )\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{String\} textContain 
+\f1 \'cd\'c6\'cb\'cd\'cf\'fb\'cf\'a2\'cc\'e5\'c4\'da\'c8\'dd
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{Int\} badge\'a0 
+\f1 \'b1\'be\'b5\'d8\'cd\'c6\'cb\'cd\'b4\'a5\'b7\'a2\'ba\'f3
+\f0  
+\f1 \'d3\'a6\'d3\'c3
+\f0  Badge
+\f1 \'a3\'a8\'d0\'a1\'ba\'ec\'b5\'e3\'a3\'a9\'cf\'d4\'ca\'be\'b5\'c4\'ca\'fd\'d7\'d6
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{String\} alertAction 
+\f1 \'b5\'af\'bf\'f2\'b5\'c4\'b0\'b4\'c5\'a5\'cf\'d4\'ca\'be\'b5\'c4\'c4\'da\'c8\'dd\'a3\'a8
+\f0 IOS 8
+\f1 \'c4\'ac\'c8\'cf\'ce\'aa
+\f0 "
+\f1 \'b4\'f2\'bf\'aa
+\f0 ", 
+\f1 \'c6\'e4\'cb\'fb\'c4\'ac\'c8\'cf\'ce\'aa
+\f0 "
+\f1 \'c6\'f4\'b6\'af
+\f0 "
+\f1 \'a3\'a9
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{String\} notificationKey\'a0 
+\f1 \'b1\'be\'b5\'d8\'cd\'c6\'cb\'cd\'b1\'ea\'ca\'be\'b7\'fb
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{Object\} userInfo 
+\f1 \'cd\'c6\'cb\'cd\'b5\'c4\'b8\'bd\'bc\'d3\'d7\'d6\'b6\'ce
+\f0  
+\f1 \'d1\'a1\'cc\'ee
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{String\} soundName 
+\f1 \'d7\'d4\'b6\'a8\'d2\'e5\'cd\'a8\'d6\'aa\'c9\'f9\'d2\'f4\'a3\'ac\'c9\'e8\'d6\'c3\'ce\'aa
+\f0  null 
+\f1 \'ce\'aa\'c4\'ac\'c8\'cf\'c9\'f9\'d2\'f4
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static setLocalNotification(date, textContain, badge, alertAction, notificationKey, userInfo, soundName) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.setLocalNotification(date, textContain, badge, alertAction, notificationKey, userInfo, soundName);\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @typedef Notification\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @type \{object\}\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * // Android Only\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @property \{number\} [buildId] - 
+\f1 \'cd\'a8\'d6\'aa\'d1\'f9\'ca\'bd\'a3\'ba
+\f0 1 
+\f1 \'ce\'aa\'bb\'f9\'b4\'a1\'d1\'f9\'ca\'bd\'a3\'ac
+\f0 2 
+\f1 \'ce\'aa\'d7\'d4\'b6\'a8\'d2\'e5\'d1\'f9\'ca\'bd\'a3\'a8\'d0\'e8\'cf\'c8\'b5\'f7\'d3\'c3
+\f0  `setStyleCustom` 
+\f1 \'c9\'e8\'d6\'c3\'d7\'d4\'b6\'a8\'d2\'e5\'d1\'f9\'ca\'bd\'a3\'a9
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @property \{number\} [id] - 
+\f1 \'cd\'a8\'d6\'aa
+\f0  id, 
+\f1 \'bf\'c9\'d3\'c3\'d3\'da\'c8\'a1\'cf\'fb\'cd\'a8\'d6\'aa
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @property \{string\} [title] - 
+\f1 \'cd\'a8\'d6\'aa\'b1\'ea\'cc\'e2
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @property \{string\} [content] - 
+\f1 \'cd\'a8\'d6\'aa\'c4\'da\'c8\'dd
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @property \{object\} [extra] - extra 
+\f1 \'d7\'d6\'b6\'ce
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @property \{number\} [fireTime] - 
+\f1 \'cd\'a8\'d6\'aa\'b4\'a5\'b7\'a2\'ca\'b1\'bc\'e4\'a3\'a8\'ba\'c1\'c3\'eb\'a3\'a9
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * // iOS Only\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @property \{number\} [badge] - 
+\f1 \'b1\'be\'b5\'d8\'cd\'c6\'cb\'cd\'b4\'a5\'b7\'a2\'ba\'f3\'d3\'a6\'d3\'c3\'bd\'c7\'b1\'ea\'d6\'b5
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * // iOS Only\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @property \{string\} [soundName] - 
+\f1 \'d6\'b8\'b6\'a8\'cd\'c6\'cb\'cd\'b5\'c4\'d2\'f4\'c6\'b5\'ce\'c4\'bc\'fe
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * // iOS 10+ Only\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @property \{string\} [subtitle] - 
+\f1 \'d7\'d3\'b1\'ea\'cc\'e2
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{Notification\} notification\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static sendLocalNotification(notification) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.sendLocalNotification(notification);\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'d2\'c6\'b3\'fd\'cb\'f9\'d3\'d0\'b5\'c4\'b1\'be\'b5\'d8\'cd\'a8\'d6\'aa
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static clearLocalNotifications() \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.clearLocalNotifications();\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'d2\'c6\'b3\'fd\'d6\'b8\'b6\'a8\'ce\'b4\'b4\'a5\'b7\'a2\'b5\'c4\'b1\'be\'b5\'d8\'cd\'a8\'d6\'aa\'a1\'a3
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static removeLocalNotification(id) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.removeLocalNotification(id);\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * iOS Only\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'c9\'e8\'d6\'c3\'d3\'a6\'d3\'c3
+\f0  Badge
+\f1 \'a3\'a8\'d0\'a1\'ba\'ec\'b5\'e3\'a3\'a9
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{Int\} badge\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{Function\} cb = () => \{ \} //\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static setBadge(badge, cb) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 JPushModule.setBadge(badge, (value) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 cb(value);\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\cf2 \strokec2 \}\cf5 \strokec5 \
+}
