@@ -1,0 +1,392 @@
+{\rtf1\ansi\ansicpg936\cocoartf1671\cocoasubrtf400
+{\fonttbl\f0\fnil\fcharset0 Consolas;\f1\fnil\fcharset134 PingFangSC-Regular;}
+{\colortbl;\red255\green255\blue255;\red109\green109\blue109;\red255\green255\blue255;\red38\green38\blue38;
+\red0\green0\blue0;\red40\green82\blue135;\red3\green37\blue83;\red15\green114\blue1;}
+{\*\expandedcolortbl;;\cssrgb\c50196\c50196\c50196;\cssrgb\c100000\c100000\c100000;\cssrgb\c20000\c20000\c20000;
+\cssrgb\c0\c0\c0;\cssrgb\c20000\c40000\c60000;\cssrgb\c0\c20000\c40000;\cssrgb\c0\c50980\c0;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww21660\viewh12220\viewkind0
+\deftab720
+\pard\pardeftab720\sl400\partightenfactor0
+
+\f0\fs28 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 #import <UIKit/UIKit.h>\cf4 \strokec4 \
+\cf2 \strokec2 #define MAS_SHORTHAND\cf4 \strokec4 \
+\cf2 \strokec2 #define MAS_SHORTHAND_GLOBALS\cf4 \strokec4 \
+\cf2 \strokec2 #import "Masonry.h"\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @interface ShowBankCardView : UIView\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @property (nonatomic, assign) BOOL isShowing;\cf4 \strokec4 \
+\cf5 \strokec5 @property (nonatomic, copy)\'a0\'a0 NSString *bankCard;\cf4 \strokec4 \
+\cf5 \strokec5 @property (nonatomic, strong) UIImage *bankCardImage;\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @property (nonatomic, copy) void (^sureHander)(void);\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 + (void)showBankCardWithBankCard:(NSString *)bankCard\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 bankCardImage:(UIImage *)bankCardImage\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 btnEventHandler:(void(^)(void))handler;\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @end\cf4 \strokec4 \
+\'a0\
+\'a0\
+\cf2 \strokec2 #import "ShowBankCardView.h"\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @interface CardNumberItem : UIView\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @property (nonatomic, strong) UILabel *cardNumberLb;\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @property (nonatomic, strong) UIView *line;\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @end\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @implementation CardNumberItem\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 - (instancetype)init\cf4 \strokec4 \
+\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 self = [\cf6 \strokec6 super\cf4 \strokec4 \'a0\cf5 \strokec5 init];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf6 \strokec6 if\cf4 \strokec4 \'a0\cf5 \strokec5 (self)\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [self line];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf6 \strokec6 return\cf4 \strokec4 \'a0\cf5 \strokec5 self;\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 - (UILabel *)cardNumberLb\cf4 \strokec4 \
+\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf6 \strokec6 if\cf4 \strokec4 \'a0\cf5 \strokec5 (_cardNumberLb == nil)\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 _cardNumberLb = [[UILabel alloc] init];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 _cardNumberLb.textAlignment = NSTextAlignmentCenter;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 _cardNumberLb.font = [UIFont systemFontOfSize:16];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [self addSubview:_cardNumberLb];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [_cardNumberLb makeConstraints:^(MASConstraintMaker *make) \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 make.left.right.top.equalTo(self);\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 \}];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf6 \strokec6 return\cf4 \strokec4 \'a0\cf5 \strokec5 _cardNumberLb;\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 - (UIView *)line\cf4 \strokec4 \
+\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf6 \strokec6 if\cf4 \strokec4 \'a0\cf5 \strokec5 (_line == nil)\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 _line = [[UIView alloc] init];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 _line.backgroundColor = [UIColor lightGrayColor];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [self addSubview:_line];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [_line makeConstraints:^(MASConstraintMaker *make) \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 make.top.equalTo(self.cardNumberLb.bottom).offset(10);\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 make.left.right.equalTo(self);\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 make.height.equalTo(1);\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 \}];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf6 \strokec6 return\cf4 \strokec4 \'a0\cf5 \strokec5 _line;\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @end\cf4 \strokec4 \
+\'a0\
+\'a0\
+\cf5 \strokec5 @interface ShowBankCardView ()\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @property (nonatomic, strong) UIView *containerView;\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @property (nonatomic, strong) UILabel *titleLb;\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @property (nonatomic, strong) UIImageView *cardImageView;\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @property (nonatomic, strong) UIView *cardNumberBox;\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @property (nonatomic, strong) UIButton *closeButton;\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @property (nonatomic, strong) UIButton *sureButton;\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @end\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @implementation ShowBankCardView\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 + (void)showBankCardWithBankCard:(NSString *)bankCard bankCardImage:(UIImage *)bankCardImage btnEventHandler:(void (^)(void))handler\cf4 \strokec4 \
+\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 ShowBankCardView *cardView = [[ShowBankCardView alloc] init];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 cardView.sureHander = handler;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 cardView.bankCard = bankCard;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 cardView.bankCardImage = bankCardImage;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf5 \strokec5 cardView.titleLb.text = @\cf7 \strokec7 "
+\f1 \'c7\'eb\'ba\'cb\'b6\'d4\'bf\'a8\'ba\'c5\'d0\'c5\'cf\'a2\'a3\'ac\'c8\'b7\'c8\'cf\'ce\'de\'ce\'f3
+\f0 "\cf5 \strokec5 ;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 cardView.cardImageView.image = bankCardImage;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf5 \strokec5 cardView.frame = [UIScreen mainScreen].bounds;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 cardView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.6];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [cardView closeButton];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [cardView sureButton];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [cardView show];\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 - (void)setBankCard:(NSString *)bankCard\cf4 \strokec4 \
+\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 NSString *first\'a0 = [bankCard substringToIndex:6];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 NSString *middle = [bankCard substringWithRange:NSMakeRange(6, 6)];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 NSString *last = [bankCard substringFromIndex:12];\cf4 \strokec4 \
+\'a0\
+\'a0\'a0\'a0\'a0\cf5 \strokec5 NSMutableArray *items = [NSMutableArray array];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf5 \strokec5 CardNumberItem *item1 = [[CardNumberItem alloc] init];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 item1.cardNumberLb.text = first;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf5 \strokec5 CardNumberItem *item2 = [[CardNumberItem alloc] init];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 item2.cardNumberLb.text = middle;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf5 \strokec5 CardNumberItem *item3 = [[CardNumberItem alloc] init];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 item3.cardNumberLb.text = last;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [self.cardNumberBox addSubview:item1];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [self.cardNumberBox addSubview:item2];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [self.cardNumberBox addSubview:item3];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [items addObjectsFromArray:@[item1,item2,item3]];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [items mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedSpacing:20 leadSpacing:0 tailSpacing:0];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [items makeConstraints:^(MASConstraintMaker *make) \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 make.top.bottom.equalTo(self.cardNumberBox);\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \}];\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 - (UIView *)containerView\cf4 \strokec4 \
+\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf6 \strokec6 if\cf4 \strokec4 \'a0\cf5 \strokec5 (_containerView == nil)\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 _containerView = [[UIView alloc] init];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 _containerView.backgroundColor = [UIColor whiteColor];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [self addSubview:_containerView];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [_containerView mas_makeConstraints:^(MASConstraintMaker *make) \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 make.centerY.equalTo(self);\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 make.left.equalTo(self).offset(30);\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 make.right.equalTo(self).offset(-30);\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 \}];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf6 \strokec6 return\cf4 \strokec4 \'a0\cf5 \strokec5 _containerView;\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 - (UIButton *)closeButton\cf4 \strokec4 \
+\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf6 \strokec6 if\cf4 \strokec4 \'a0\cf5 \strokec5 (_closeButton == nil)\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 _closeButton = [[UIButton alloc] init];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [_closeButton setImage:[UIImage imageNamed:@\cf7 \strokec7 "delete"\cf5 \strokec5 ] forState:UIControlStateNormal];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [_closeButton addTarget:self action:@selector(onCloseButtonClick:) forControlEvents:UIControlEventTouchUpInside];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [self.containerView addSubview:_closeButton];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [_closeButton mas_makeConstraints:^(MASConstraintMaker *make) \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 make.top.equalTo(self.containerView).offset(15);\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 make.right.equalTo(self.containerView).offset(-15);\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 make.size.equalTo(CGSizeMake(30, 30));\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 \}];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf6 \strokec6 return\cf4 \strokec4 \'a0\cf5 \strokec5 _closeButton;\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 - (UILabel *)titleLb\cf4 \strokec4 \
+\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf6 \strokec6 if\cf4 \strokec4 \'a0\cf5 \strokec5 (_titleLb == nil)\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 _titleLb = [[UILabel alloc] init];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [self.containerView addSubview:_titleLb];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [_titleLb mas_makeConstraints:^(MASConstraintMaker *make) \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 make.top.left.equalTo(self.containerView).offset(20);\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 make.right.equalTo(self.containerView).offset(-20);\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 \}];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf6 \strokec6 return\cf4 \strokec4 \'a0\cf5 \strokec5 _titleLb;\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 - (UIImageView *)cardImageView\cf4 \strokec4 \
+\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf6 \strokec6 if\cf4 \strokec4 \'a0\cf5 \strokec5 (_cardImageView == nil)\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 _cardImageView = [[UIImageView alloc] init];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [self.containerView addSubview:_cardImageView];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [_cardImageView mas_makeConstraints:^(MASConstraintMaker *make) \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 make.top.equalTo(self.titleLb.bottom).offset(20);\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 make.left.right.equalTo(self.titleLb);\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 make.height.greaterThanOrEqualTo(40);\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 \}];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf6 \strokec6 return\cf4 \strokec4 \'a0\cf5 \strokec5 _cardImageView;\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 - (UIView *)cardNumberBox\cf4 \strokec4 \
+\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf6 \strokec6 if\cf4 \strokec4 \'a0\cf5 \strokec5 (_cardNumberBox == nil)\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 _cardNumberBox = [[UIView alloc] init];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [self.containerView addSubview:_cardNumberBox];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [_cardNumberBox mas_makeConstraints:^(MASConstraintMaker *make) \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 make.top.equalTo(self.cardImageView.bottom).offset(20);\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 make.left.right.equalTo(self.cardImageView);\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 make.size.equalTo(CGSizeMake(46, 46));\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 \}];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf6 \strokec6 return\cf4 \strokec4 \'a0\cf5 \strokec5 _cardNumberBox;\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 - (UIButton *)sureButton\cf4 \strokec4 \
+\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf6 \strokec6 if\cf4 \strokec4 \'a0\cf5 \strokec5 (_sureButton == nil)\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 _sureButton = [[UIButton alloc] init];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 _sureButton.layer.cornerRadius = 25;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 _sureButton.layer.masksToBounds = YES;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [_sureButton setTitle:@\cf7 \strokec7 "
+\f1 \'c8\'b7\'c8\'cf
+\f0 "\cf4 \strokec4 \'a0\cf5 \strokec5 forState:UIControlStateNormal];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [_sureButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 _sureButton.backgroundColor = [UIColor yellowColor];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [_sureButton addTarget:self action:@selector(onCloseButtonClick:) forControlEvents:UIControlEventTouchUpInside];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [self.containerView addSubview:_sureButton];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [_sureButton mas_makeConstraints:^(MASConstraintMaker *make) \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 make.top.equalTo(self.cardNumberBox.bottom).offset(10);\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 make.left.equalTo(self.containerView).offset(15);\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 make.right.equalTo(self.containerView).offset(-15);\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 make.height.equalTo(50);\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 make.bottom.equalTo(self.containerView).offset(-15);\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 \}];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf6 \strokec6 return\cf4 \strokec4 \'a0\cf5 \strokec5 _sureButton;\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\'a0\
+\cf5 \strokec5 - (void)onCloseButtonClick:(UIButton *)sender\cf4 \strokec4 \
+\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [self hide];\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 - (void)show\cf4 \strokec4 \
+\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf6 \strokec6 if\cf4 \strokec4 \'a0\cf5 \strokec5 (![self judgeShowCondition])\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf6 \strokec6 return\cf5 \strokec5 ;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf5 \strokec5 self.alpha = 0;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [[UIApplication sharedApplication].keyWindow addSubview:self];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [UIView animateWithDuration:0.25 animations:^\{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 self.alpha = 1;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \}];\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 - (void)hide\cf4 \strokec4 \
+\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [UIView animateWithDuration:0.25 animations:^\{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 self.alpha = 0;\cf4 \strokec4 \
+\'a0\
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \} completion:^(BOOL finished) \{\cf4 \strokec4 \
+\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [self removeFromSuperview];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf6 \strokec6 if\cf4 \strokec4 \'a0\cf5 \strokec5 (self.sureHander != nil)\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 self.sureHander();\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \}];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf5 \strokec5 self.isShowing = NO;\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\'a0\
+\cf5 \strokec5 - (UINavigationController *)currentNavigationController\cf4 \strokec4 \
+\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 UINavigationController *navigationController = nil;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf5 \strokec5 UIViewController *controller = [UIApplication sharedApplication].keyWindow.rootViewController;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf6 \strokec6 if\cf4 \strokec4 \'a0\cf5 \strokec5 ([controller isKindOfClass:[UITabBarController class]])\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 UITabBarController *tabBarController = (UITabBarController *)controller;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 controller = tabBarController.viewControllers[tabBarController.selectedIndex];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf6 \strokec6 if\cf4 \strokec4 \'a0\cf5 \strokec5 ([controller isKindOfClass:[UINavigationController class]])\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 navigationController = (UINavigationController *)controller;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf6 \strokec6 while\cf4 \strokec4 \'a0\cf5 \strokec5 (controller.presentedViewController != nil)\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 controller = controller.presentedViewController;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf6 \strokec6 if\cf4 \strokec4 \'a0\cf5 \strokec5 ([controller isKindOfClass:[UINavigationController class]])\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 navigationController = (UINavigationController *)controller;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf6 \strokec6 return\cf4 \strokec4 \'a0\cf5 \strokec5 navigationController;\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf8 \strokec8 /** 
+\f1 \'c5\'d0\'b6\'cf\'cf\'d4\'ca\'be\'cc\'f5\'bc\'fe\'a3\'ac\'c8\'e7\'b9\'fb\'d3\'d0\'c6\'e4\'cb\'fb\'ca\'d3\'cd\'bc\'d5\'fd\'d4\'da\'cf\'d4\'ca\'be\'be\'cd\'b2\'bb\'b5\'af\'b3\'f6
+\f0  */\cf4 \strokec4 \
+\cf5 \strokec5 - (BOOL)judgeShowCondition\cf4 \strokec4 \
+\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf6 \strokec6 if\cf4 \strokec4 \'a0\cf5 \strokec5 (_isShowing)\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf6 \strokec6 return\cf4 \strokec4 \'a0\cf5 \strokec5 NO;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf5 \strokec5 self.isShowing = YES;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf5 \strokec5 UIViewController *rootController = [UIApplication sharedApplication].keyWindow.rootViewController;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf6 \strokec6 if\cf4 \strokec4 \'a0\cf5 \strokec5 ([rootController.presentedViewController isKindOfClass:[UIAlertController class]])\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf6 \strokec6 return\cf4 \strokec4 \'a0\cf5 \strokec5 NO;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf5 \strokec5 UINavigationController *curNavi = [self currentNavigationController];\cf4 \strokec4 \
+\'a0\
+\'a0\'a0\'a0\'a0\cf6 \strokec6 if\cf4 \strokec4 \'a0\cf5 \strokec5 ([curNavi isBeingPresented])\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf6 \strokec6 return\cf4 \strokec4 \'a0\cf5 \strokec5 NO;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf6 \strokec6 for\cf4 \strokec4 \'a0\cf5 \strokec5 (UIView *subview\'a0\cf6 \strokec6 in\cf4 \strokec4 \'a0\cf5 \strokec5 [UIApplication sharedApplication].keyWindow.subviews)\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf6 \strokec6 if\cf4 \strokec4 \'a0\cf5 \strokec5 ([subview isKindOfClass:[ShowBankCardView class]])\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf6 \strokec6 return\cf4 \strokec4 \'a0\cf5 \strokec5 NO;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf6 \strokec6 return\cf4 \strokec4 \'a0\cf5 \strokec5 YES;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @end\cf4 \strokec4 \
+}

@@ -1,0 +1,264 @@
+{\rtf1\ansi\ansicpg936\cocoartf1671\cocoasubrtf400
+{\fonttbl\f0\fnil\fcharset0 Consolas;\f1\fnil\fcharset134 PingFangSC-Regular;}
+{\colortbl;\red255\green255\blue255;\red109\green109\blue109;\red255\green255\blue255;\red38\green38\blue38;
+\red0\green0\blue0;\red15\green114\blue1;\red40\green82\blue135;\red3\green37\blue83;}
+{\*\expandedcolortbl;;\cssrgb\c50196\c50196\c50196;\cssrgb\c100000\c100000\c100000;\cssrgb\c20000\c20000\c20000;
+\cssrgb\c0\c0\c0;\cssrgb\c0\c50980\c0;\cssrgb\c20000\c40000\c60000;\cssrgb\c0\c20000\c40000;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww21660\viewh12220\viewkind0
+\deftab720
+\pard\pardeftab720\sl400\partightenfactor0
+
+\f0\fs28 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 #import <UIKit/UIKit.h>\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 NS_ASSUME_NONNULL_BEGIN\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @interface BankPhotoPicker : NSObject\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 -(instancetype)initWithViewController:(UIViewController *)vc;\cf4 \strokec4 \
+\cf5 \strokec5 @property(nonatomic,strong)UIViewController *viewController;\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 - (void)getBankNumOperation;\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @end\cf4 \strokec4 \
+\cf5 \strokec5 NS_ASSUME_NONNULL_END\cf4 \strokec4 \
+\'a0\
+\cf2 \strokec2 #import "BankPhotoPicker.h"\cf4 \strokec4 \
+\cf2 \strokec2 #import <objc/runtime.h>\cf4 \strokec4 \
+\cf2 \strokec2 #import <AipOcrSdk/AipOcrSdk.h>\cf4 \strokec4 \
+\cf2 \strokec2 #import "ShowBankCardView.h"\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @interface BankPhotoPicker ()<UIAlertViewDelegate>\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @end\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @implementation BankPhotoPicker\{\cf4 \strokec4 \
+\'a0\'a0\cf6 \strokec6 // 
+\f1 \'c4\'ac\'c8\'cf\'b5\'c4\'ca\'b6\'b1\'f0\'b3\'c9\'b9\'a6\'b5\'c4\'bb\'d8\'b5\'f7
+\f0 \cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 void (^_successHandler)(id);\cf4 \strokec4 \
+\'a0\'a0\cf6 \strokec6 // 
+\f1 \'c4\'ac\'c8\'cf\'b5\'c4\'ca\'b6\'b1\'f0\'ca\'a7\'b0\'dc\'b5\'c4\'bb\'d8\'b5\'f7
+\f0 \cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 void (^_failHandler)(NSError *);\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\'a0\
+\cf5 \strokec5 -(instancetype)initWithViewController:(UIViewController *)vc\{\cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 self=[\cf7 \strokec7 super\cf4 \strokec4 \'a0\cf5 \strokec5 init];\cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 self.viewController=vc;\cf4 \strokec4 \
+\'a0\'a0\cf7 \strokec7 return\cf4 \strokec4 \'a0\cf5 \strokec5 self;\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 - (void)getBankNumOperation\cf4 \strokec4 \
+\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 [[AipOcrService shardService] authWithAK:@\cf8 \strokec8 "TwWXBRMjOphxP0axV6BGjgV8"\cf4 \strokec4 \'a0\cf5 \strokec5 andSK:@\cf8 \strokec8 "3Kjmcih1wlF7INGgY6MG1s4M1uuy7Nyo"\cf5 \strokec5 ];\cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 NSLog(@\cf8 \strokec8 "
+\f1 \'bb\'f1\'c8\'a1\'d2\'f8\'d0\'d0\'bf\'a8\'ba\'c5
+\f0 "\cf5 \strokec5 );\cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 [self bankCardOCROnline];\cf4 \strokec4 \
+\'a0\'a0\'a0\
+\cf6 \strokec6 //\'a0 [self configCallback];\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\'a0\
+\cf5 \strokec5 - (void)bankCardOCROnline\{\cf4 \strokec4 \
+\'a0\'a0\'a0\
+\'a0\'a0\cf5 \strokec5 UIViewController * AipCaptureVC =[AipCaptureCardVC ViewControllerWithCardType:CardTypeBankCard\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 andImageHandler:^(UIImage *image) \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [self showCardImage:image];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 \}];\cf4 \strokec4 \
+\'a0\'a0\'a0\
+\'a0\'a0\'a0\cf5 \strokec5 [self.viewController presentViewController:AipCaptureVC animated:YES completion:nil];\cf4 \strokec4 \
+\'a0\'a0\'a0\
+\cf6 \strokec6 //\'a0 [self configCallback];\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 - (void)showCardImage:(UIImage *)cardImage\cf4 \strokec4 \
+\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 [[AipOcrService shardService] detectBankCardFromImage:cardImage successHandler:^(id result) \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf5 \strokec5 NSString *card = result[@\cf8 \strokec8 "result"\cf5 \strokec5 ][@\cf8 \strokec8 "bank_card_number"\cf5 \strokec5 ];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 card = [card stringByReplacingOccurrencesOfString:@\cf8 \strokec8 " "\cf4 \strokec4 \'a0\cf5 \strokec5 withString:@\cf8 \strokec8 ""\cf5 \strokec5 ];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 NSString *bankNum = card;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 NSString *bankName = result[@\cf8 \strokec8 "result"\cf5 \strokec5 ][@\cf8 \strokec8 "bank_name"\cf5 \strokec5 ];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 NSLog(@\cf8 \strokec8 "
+\f1 \'c4\'ac\'c8\'cf\'ca\'b6\'b1\'f0\'b3\'c9\'b9\'a6\'b5\'c4
+\f0 card
+\f1 \'ce\'aa
+\f0 %@"\cf5 \strokec5 , card);\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 NSLog(@\cf8 \strokec8 "
+\f1 \'c4\'ac\'c8\'cf\'ca\'b6\'b1\'f0\'b3\'c9\'b9\'a6\'b5\'c4
+\f0 bankName
+\f1 \'ce\'aa
+\f0 %@"\cf5 \strokec5 , bankName);\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf6 \strokec6 //
+\f1 \'b7\'a2\'cb\'cd\'d2\'f8\'d0\'d0\'bf\'a8\'bf\'a8\'ba\'c5\'d0\'c5\'cf\'a2\'cd\'a8\'d6\'aa
+\f0 \cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [[NSNotificationCenter defaultCenter] postNotificationName:@\cf8 \strokec8 "sendBankPhotoEventNotification"\cf4 \strokec4 \'a0\cf5 \strokec5 object:nil userInfo:@\{@\cf8 \strokec8 "bankNum"\cf5 \strokec5 :bankNum,@\cf8 \strokec8 "bankName"\cf5 \strokec5 :bankName\}];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [[AipOcrService shardService] detectTextAccurateFromImage:cardImage withOptions:nil successHandler:^(id result) \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 NSArray *locas = result[@\cf8 \strokec8 "words_result"\cf5 \strokec5 ];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 for\cf4 \strokec4 \'a0\cf5 \strokec5 (NSDictionary *d\'a0\cf7 \strokec7 in\cf4 \strokec4 \'a0\cf5 \strokec5 locas)\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 NSDictionary *locaD = d[@\cf8 \strokec8 "location"\cf5 \strokec5 ];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 NSLog(@\cf8 \strokec8 "locaD==>>%@:%@"\cf5 \strokec5 ,d[@\cf8 \strokec8 "words"\cf5 \strokec5 ],locaD);\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf4 \strokec4 \'a0\cf5 \strokec5 ([card isEqualToString:d[@\cf8 \strokec8 "words"\cf5 \strokec5 ]])\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 CGFloat x = [locaD[@\cf8 \strokec8 "left"\cf5 \strokec5 ] floatValue];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 CGFloat y = [locaD[@\cf8 \strokec8 "top"\cf5 \strokec5 ] floatValue];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 CGFloat width = [locaD[@\cf8 \strokec8 "width"\cf5 \strokec5 ] floatValue];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 CGFloat height = [locaD[@\cf8 \strokec8 "height"\cf5 \strokec5 ] floatValue];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf4 \strokec4 \'a0\cf5 \strokec5 (_successHandler != nil)\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 _successHandler(result);\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [[NSOperationQueue mainQueue] addOperationWithBlock:^\{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf6 \strokec6 //
+\f1 \'b7\'a2\'cb\'cd\'d2\'f8\'d0\'d0\'bf\'a8\'bf\'a8\'ba\'c5\'d0\'c5\'cf\'a2\'cd\'a8\'d6\'aa
+\f0 \cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [[NSNotificationCenter defaultCenter] postNotificationName:@\cf8 \strokec8 "sendBankPhotoEventNotification"\cf4 \strokec4 \'a0\cf5 \strokec5 object:nil userInfo:@\{@\cf8 \strokec8 "bankNum"\cf5 \strokec5 :bankNum,@\cf8 \strokec8 "bankName"\cf5 \strokec5 :bankName\}];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 UIViewController *topRootViewController = [[UIApplication\'a0 sharedApplication] keyWindow].rootViewController;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf6 \strokec6 // 
+\f1 \'d4\'da\'d5\'e2\'c0\'ef\'bc\'d3\'d2\'bb\'b8\'f6\'d5\'e2\'b8\'f6\'d1\'f9\'ca\'bd\'b5\'c4\'d1\'ad\'bb\'b7
+\f0 \cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 while\cf4 \strokec4 \'a0\cf5 \strokec5 (topRootViewController.presentedViewController)\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf6 \strokec6 // 
+\f1 \'d5\'e2\'c0\'ef\'b9\'cc\'b6\'a8\'d0\'b4\'b7\'a8
+\f0 \cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 topRootViewController = topRootViewController.presentedViewController;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [topRootViewController dismissViewControllerAnimated:YES completion:^\{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 NSLog(@\cf8 \strokec8 "bankPhotoPicker
+\f1 \'cd\'cb\'b3\'f6
+\f0 "\cf5 \strokec5 );\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 \}];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 \}];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^\{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [ShowBankCardView showBankCardWithBankCard:card bankCardImage:[self imageByCroppingWithImage:cardImage cropRect:CGRectMake(x, y, width, height)] btnEventHandler:nil];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 \});\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \} failHandler:nil];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\cf5 \strokec5 \} failHandler:_failHandler];\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf6 \strokec6 //
+\f1 \'bc\'f4\'b2\'c3\'cd\'bc\'c6\'ac
+\f0 \cf4 \strokec4 \
+\cf5 \strokec5 - (UIImage*)imageByCroppingWithImage:(UIImage *)myImage cropRect:(CGRect)cropRect\cf4 \strokec4 \
+\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 CGRect rect = cropRect;\cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 rect.origin.x = myImage.scale * rect.origin.x - 10;\cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 rect.origin.y = myImage.scale * rect.origin.y - 15;\cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 rect.size.width = myImage.scale * rect.size.width + 20;\cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 rect.size.height = myImage.scale * rect.size.height + 30;\cf4 \strokec4 \
+\'a0\'a0\'a0\
+\'a0\'a0\cf5 \strokec5 CGImageRef imageRef = myImage.CGImage;\cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 CGImageRef imagePartRef=CGImageCreateWithImageInRect(imageRef,rect);\cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 UIImage * cropImage=[UIImage imageWithCGImage:imagePartRef];\cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 CGImageRelease(imagePartRef);\cf4 \strokec4 \
+\'a0\'a0\'a0\
+\'a0\'a0\cf7 \strokec7 return\cf4 \strokec4 \'a0\cf5 \strokec5 cropImage;\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\'a0\
+\cf5 \strokec5 - (void)configCallback \{\cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 __weak\'a0\cf7 \strokec7 typeof\cf5 \strokec5 (self) weakSelf = self;\cf4 \strokec4 \
+\'a0\'a0\'a0\
+\'a0\'a0\cf6 \strokec6 // 
+\f1 \'d5\'e2\'ca\'c7\'c4\'ac\'c8\'cf\'b5\'c4\'ca\'b6\'b1\'f0\'b3\'c9\'b9\'a6\'b5\'c4\'bb\'d8\'b5\'f7
+\f0 \cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 _successHandler = ^(id result)\{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf5 \strokec5 NSLog(@\cf8 \strokec8 "
+\f1 \'c4\'ac\'c8\'cf\'b5\'c4\'ca\'b6\'b1\'f0\'b3\'c9\'b9\'a6\'b5\'c4\'bb\'d8\'b5\'f7\'ce\'aa
+\f0 %@"\cf5 \strokec5 , result);\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 NSLog(@\cf8 \strokec8 "
+\f1 \'c4\'ac\'c8\'cf\'b5\'c4\'ca\'b6\'b1\'f0\'b3\'c9\'b9\'a6\'b5\'c4\'bb\'d8\'b5\'f7
+\f0 log_id
+\f1 \'ce\'aa
+\f0 %@"\cf5 \strokec5 , result[@\cf8 \strokec8 "log_id"\cf5 \strokec5 ]);\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 NSLog(@\cf8 \strokec8 "
+\f1 \'c4\'ac\'c8\'cf\'b5\'c4\'ca\'b6\'b1\'f0\'b3\'c9\'b9\'a6\'b5\'c4\'bb\'d8\'b5\'f7
+\f0 result
+\f1 \'ce\'aa
+\f0 %@"\cf5 \strokec5 , result[@\cf8 \strokec8 "result"\cf5 \strokec5 ]);\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 NSLog(@\cf8 \strokec8 "
+\f1 \'c4\'ac\'c8\'cf\'b5\'c4\'ca\'b6\'b1\'f0\'b3\'c9\'b9\'a6\'b5\'c4\'bb\'d8\'b5\'f7
+\f0 bank_card_number
+\f1 \'ce\'aa
+\f0 %@"\cf5 \strokec5 , result[@\cf8 \strokec8 "result"\cf5 \strokec5 ][@\cf8 \strokec8 "bank_card_number"\cf5 \strokec5 ]);\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 NSLog(@\cf8 \strokec8 "
+\f1 \'c4\'ac\'c8\'cf\'b5\'c4\'ca\'b6\'b1\'f0\'b3\'c9\'b9\'a6\'b5\'c4\'bb\'d8\'b5\'f7
+\f0 bank_name
+\f1 \'ce\'aa
+\f0 %@"\cf5 \strokec5 , result[@\cf8 \strokec8 "result"\cf5 \strokec5 ][@\cf8 \strokec8 "bank_name"\cf5 \strokec5 ]);\cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 \};\cf4 \strokec4 \
+\'a0\'a0\'a0\
+\'a0\'a0\cf5 \strokec5 _failHandler = ^(NSError *error)\{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 NSLog(@\cf8 \strokec8 "%@"\cf5 \strokec5 , error);\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 NSString *msg = [NSString stringWithFormat:@\cf8 \strokec8 "%li:%@"\cf5 \strokec5 , (long)[error code], [error localizedDescription]];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [[NSOperationQueue mainQueue] addOperationWithBlock:^\{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [[[UIAlertView alloc] initWithTitle:@\cf8 \strokec8 "
+\f1 \'ca\'b6\'b1\'f0\'ca\'a7\'b0\'dc
+\f0 "\cf4 \strokec4 \'a0\cf5 \strokec5 message:msg delegate:weakSelf cancelButtonTitle:@\cf8 \strokec8 "
+\f1 \'c8\'b7\'b6\'a8
+\f0 "\cf4 \strokec4 \'a0\cf5 \strokec5 otherButtonTitles:nil] show];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \}];\cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 \};\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\'a0\
+\cf5 \strokec5 -(BOOL)shouldAutorotate\{\cf4 \strokec4 \
+\'a0\'a0\cf7 \strokec7 return\cf4 \strokec4 \'a0\cf5 \strokec5 NO;\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 - (UIInterfaceOrientationMask)supportedInterfaceOrientations\cf4 \strokec4 \
+\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\cf7 \strokec7 return\cf4 \strokec4 \'a0\cf5 \strokec5 UIInterfaceOrientationMaskPortrait;\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf2 \strokec2 #pragma mark UIAlertViewDelegate\cf4 \strokec4 \
+\cf5 \strokec5 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex \{\cf4 \strokec4 \
+\'a0\'a0\'a0\
+\'a0\'a0\cf5 \strokec5 UIViewController *topRootViewController = [[UIApplication\'a0 sharedApplication] keyWindow].rootViewController;\cf4 \strokec4 \
+\'a0\'a0\'a0\
+\'a0\'a0\cf5 \strokec5 NSLog(@\cf8 \strokec8 "
+\f1 \'b0\'b4\'c1\'cb\'c8\'b7\'c8\'cf\'bc\'fc\'d2\'d4\'ba\'f3
+\f0 "\cf5 \strokec5 );\cf4 \strokec4 \
+\'a0\'a0\'a0\
+\'a0\'a0\cf6 \strokec6 // 
+\f1 \'d4\'da\'d5\'e2\'c0\'ef\'bc\'d3\'d2\'bb\'b8\'f6\'d5\'e2\'b8\'f6\'d1\'f9\'ca\'bd\'b5\'c4\'d1\'ad\'bb\'b7
+\f0 \cf4 \strokec4 \
+\'a0\'a0\cf7 \strokec7 while\cf4 \strokec4 \'a0\cf5 \strokec5 (topRootViewController.presentedViewController)\cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf6 \strokec6 // 
+\f1 \'d5\'e2\'c0\'ef\'b9\'cc\'b6\'a8\'d0\'b4\'b7\'a8
+\f0 \cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 topRootViewController = topRootViewController.presentedViewController;\cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\'a0\'a0\
+\'a0\'a0\cf5 \strokec5 [topRootViewController dismissViewControllerAnimated:YES completion:nil];\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @end\cf4 \strokec4 \
+}
