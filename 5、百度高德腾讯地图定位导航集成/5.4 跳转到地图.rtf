@@ -1,0 +1,380 @@
+{\rtf1\ansi\ansicpg936\cocoartf1671\cocoasubrtf400
+{\fonttbl\f0\fnil\fcharset0 Consolas;\f1\fnil\fcharset134 PingFangSC-Regular;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red255\green255\blue255;\red3\green37\blue83;
+\red38\green38\blue38;\red15\green114\blue1;\red40\green82\blue135;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;\cssrgb\c100000\c100000\c100000;\cssrgb\c0\c20000\c40000;
+\cssrgb\c20000\c20000\c20000;\cssrgb\c0\c50980\c0;\cssrgb\c20000\c40000\c60000;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww21660\viewh12220\viewkind0
+\deftab720
+\pard\pardeftab720\sl400\partightenfactor0
+
+\f0\fs28 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 import \{ Linking, Platform \} from\'a0\cf4 \strokec4 'react-native'\cf2 \strokec2 ;\cf5 \strokec5 \
+\cf2 \strokec2 import \{ ToastUtil \} from\'a0\cf4 \strokec4 '../service/Toast'\cf2 \strokec2 ;\cf5 \strokec5 \
+\'a0\
+\cf6 \strokec6 // transit 
+\f1 \'b9\'ab\'bd\'bb
+\f0 \cf5 \strokec5 \
+\cf6 \strokec6 // navigation 
+\f1 \'b5\'bc\'ba\'bd\'a3\'a8\'b0\'d9\'b6\'c8\'a3\'a9
+\f0 \cf5 \strokec5 \
+\cf6 \strokec6 // driving 
+\f1 \'bc\'dd\'b3\'b5
+\f0 \cf5 \strokec5 \
+\cf6 \strokec6 // walking 
+\f1 \'b2\'bd\'d0\'d0
+\f0 \cf5 \strokec5 \
+\cf6 \strokec6 // amap:t = 0
+\f1 \'a3\'a8\'bc\'dd\'b3\'b5\'a3\'a9
+\f0 = 1
+\f1 \'a3\'a8\'b9\'ab\'bd\'bb\'a3\'a9
+\f0 = 2
+\f1 \'a3\'a8\'b2\'bd\'d0\'d0\'a3\'a9
+\f0 = 3
+\f1 \'a3\'a8\'c6\'ef\'d0\'d0\'a3\'a9
+\f0 = 4
+\f1 \'a3\'a8\'bb\'f0\'b3\'b5
+\f0 android
+\f1 \'a3\'a9
+\f0 = 5
+\f1 \'a3\'a8\'b3\'a4\'cd\'be\'bf\'cd\'b3\'b5
+\f0 android
+\f1 \'a3\'a9
+\f0 \cf5 \strokec5 \
+\cf2 \strokec2 export\'a0\cf7 \strokec7 default\cf5 \strokec5 \'a0\cf2 \strokec2 class RoutePlan \{\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static Mode = \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 TRANSIT: \{ baidu:\'a0\cf4 \strokec4 'transit'\cf2 \strokec2 , qMap:\'a0\cf4 \strokec4 'bus'\cf2 \strokec2 , amap: 1 \},\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 DRIVING: \{ baidu:\'a0\cf4 \strokec4 'driving'\cf2 \strokec2 , qMap:\'a0\cf4 \strokec4 'drive'\cf2 \strokec2 , amap: 0 \},\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 WALKING: \{ baidu:\'a0\cf4 \strokec4 'walking'\cf2 \strokec2 , qMap:\'a0\cf4 \strokec4 'walk'\cf2 \strokec2 , amap: 2 \},\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 RIDING: \{ baidu:\'a0\cf4 \strokec4 'riding'\cf2 \strokec2 , qMap:\'a0\cf4 \strokec4 'bike'\cf2 \strokec2 , amap: 3 \},\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 NAVIGATION: \{ baidu:\'a0\cf4 \strokec4 'navigation'\cf2 \strokec2 , qMap:\'a0\cf4 \strokec4 'drive'\cf2 \strokec2 , amap: 0 \}\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \};\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf2 \strokec2 static isInstallAmap = () =>\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf7 \strokec7 new\cf5 \strokec5 \'a0\cf2 \strokec2 Promise((resolve) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 Linking.canOpenURL(Platform.OS ===\'a0\cf4 \strokec4 'android'\cf5 \strokec5 \'a0\cf2 \strokec2 ?\'a0\cf4 \strokec4 'amapuri://route/plan/'\cf5 \strokec5 \'a0\cf2 \strokec2 :\'a0\cf4 \strokec4 'iosamap://path'\cf2 \strokec2 )\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 .then((supported) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 resolve(supported);\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \})\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 .\cf7 \strokec7 catch\cf2 \strokec2 (() => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 resolve(\cf7 \strokec7 false\cf2 \strokec2 );\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf2 \strokec2 static isInstallBaiDuMap = () =>\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf7 \strokec7 new\cf5 \strokec5 \'a0\cf2 \strokec2 Promise((resolve) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 Linking.canOpenURL(\cf4 \strokec4 'baidumap://map/direction'\cf2 \strokec2 )\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 .then((supported) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 resolve(supported);\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \})\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 .\cf7 \strokec7 catch\cf2 \strokec2 (() => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 resolve(\cf7 \strokec7 false\cf2 \strokec2 );\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf2 \strokec2 static isInstallQQMap = () =>\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf7 \strokec7 new\cf5 \strokec5 \'a0\cf2 \strokec2 Promise((resolve) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 Linking.canOpenURL(\cf4 \strokec4 'qqmap://map/routeplan'\cf2 \strokec2 )\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 .then((supported) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 resolve(supported);\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \})\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 .\cf7 \strokec7 catch\cf2 \strokec2 (() => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 resolve(\cf7 \strokec7 false\cf2 \strokec2 );\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'b4\'f2\'bf\'aa\'b8\'df\'b5\'c2\'b5\'d8\'cd\'bc\'b5\'bc\'ba\'bd
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{String\} data.sname - 
+\f1 \'c6\'f0\'b5\'e3\'c3\'fb\'d7\'d6
+\f0 .\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{String\} data.sourceApplication - 
+\f1 \'d3\'a6\'d3\'c3\'c3\'fb\'d7\'d6
+\f0 .\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{String|number\} data.slon - 
+\f1 \'c6\'f0\'b5\'e3\'be\'ad\'b6\'c8
+\f0 .\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{String|number\} data.slat - 
+\f1 \'c6\'f0\'b5\'e3\'ce\'b3\'b6\'c8
+\f0 .\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{String\} data.dname - 
+\f1 \'d6\'d5\'b5\'e3\'c3\'fb\'d7\'d6
+\f0 .\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{String|number\} data.dlon - 
+\f1 \'d6\'d5\'b5\'e3\'be\'ad\'b6\'c8
+\f0 .\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{String|number\} data.dlat - 
+\f1 \'d6\'d5\'b5\'e3\'ce\'b3\'b6\'c8
+\f0 .\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param\{Mode\} data.mode 
+\f1 \'b5\'bc\'ba\'bd\'c0\'e0\'d0\'cd
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param data\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static openAmap = (data = \{\}) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 let base = Platform.OS ===\'a0\cf4 \strokec4 'android'\cf5 \strokec5 \'a0\cf2 \strokec2 ?\'a0\cf4 \strokec4 'amapuri://route/plan/?'\cf5 \strokec5 \'a0\cf2 \strokec2 :\'a0\cf4 \strokec4 'iosamap://path?'\cf2 \strokec2 ;\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf7 \strokec7 return\cf5 \strokec5 \'a0\cf7 \strokec7 new\cf5 \strokec5 \'a0\cf2 \strokec2 Promise((resolve, reject) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 base += `sourceApplication=$\{data.sourceApplication ||\'a0\cf4 \strokec4 'test'\cf2 \strokec2 \}`;\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf6 \strokec6 // 
+\f1 \'c6\'f0\'b5\'e3\'be\'ad\'ce\'b3\'b6\'c8\'b2\'bb\'b4\'ab\'a3\'ac\'d4\'f2\'d7\'d4\'b6\'af\'bd\'ab\'d3\'c3\'bb\'a7\'b5\'b1\'c7\'b0\'ce\'bb\'d6\'c3\'c9\'e8\'ce\'aa\'c6\'f0\'b5\'e3
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf5 \strokec5 \'a0\cf2 \strokec2 (!data.dlat || !data.dlon) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf6 \strokec6 // eslint-disable-next-line prefer-promise-reject-errors\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 reject(\cf4 \strokec4 '
+\f1 \'d0\'e8\'d2\'aa\'d6\'d5\'b5\'e3\'be\'ad\'ce\'b3\'b6\'c8
+\f0 '\cf2 \strokec2 );\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\'a0\cf7 \strokec7 else\cf5 \strokec5 \'a0\cf2 \strokec2 \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf5 \strokec5 \'a0\cf2 \strokec2 (data.slon && data.slat) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 base += `&slat=$\{data.slat\}&slon=$\{data.slon\}`;\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf5 \strokec5 \'a0\cf2 \strokec2 (data.sname) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 base += `&sname=$\{data.sname\}`;\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf5 \strokec5 \'a0\cf2 \strokec2 (data.dname) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 base += `&dname=$\{data.dname\}`;\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 base += `&dlat=$\{data.dlat\}&dlon=$\{data.dlon\}&dev=0&t=$\{data.mode ? data.mode.amap || 0 : 0\}`;\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 Linking.openURL(base)\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 .then(() => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf6 \strokec6 // resolve('
+\f1 \'b4\'f2\'bf\'aa\'b3\'c9\'b9\'a6
+\f0 ');\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \})\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 .\cf7 \strokec7 catch\cf2 \strokec2 (() => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf6 \strokec6 // eslint-disable-next-line prefer-promise-reject-errors\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 reject(\cf4 \strokec4 '
+\f1 \'d4\'dd\'ce\'de\'b0\'b2\'d7\'b0\'b8\'df\'b5\'c2\'b5\'d8\'cd\'bc
+\f0 '\cf2 \strokec2 );\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \};\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'b4\'f2\'bf\'aa\'cc\'da\'d1\'b6\'b5\'d8\'cd\'bc\'b5\'bc\'ba\'bd
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{String\} data.sname - 
+\f1 \'c6\'f0\'b5\'e3\'c3\'fb\'d7\'d6
+\f0 .\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{String|number\} data.slon - 
+\f1 \'c6\'f0\'b5\'e3\'be\'ad\'b6\'c8
+\f0 .\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{String|number\} data.slat - 
+\f1 \'c6\'f0\'b5\'e3\'ce\'b3\'b6\'c8
+\f0 .\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{String\} data.dname - 
+\f1 \'d6\'d5\'b5\'e3\'c3\'fb\'d7\'d6
+\f0 .\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{String|number\} data.dlon - 
+\f1 \'d6\'d5\'b5\'e3\'be\'ad\'b6\'c8
+\f0 .\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{String|number\} data.dlat - 
+\f1 \'d6\'d5\'b5\'e3\'ce\'b3\'b6\'c8
+\f0 .\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param\{Mode\} data.mode 
+\f1 \'b5\'bc\'ba\'bd\'c0\'e0\'d0\'cd
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param data\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static openQQMap = (data = \{\}) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 let base =\'a0\cf4 \strokec4 'qqmap://map/routeplan
+\f1 \'a3\'bf
+\f0 '\cf2 \strokec2 ;\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf7 \strokec7 return\cf5 \strokec5 \'a0\cf7 \strokec7 new\cf5 \strokec5 \'a0\cf2 \strokec2 Promise((resolve, reject) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf6 \strokec6 // 
+\f1 \'c6\'f0\'b5\'e3\'be\'ad\'ce\'b3\'b6\'c8\'b2\'bb\'b4\'ab\'a3\'ac\'d4\'f2\'d7\'d4\'b6\'af\'bd\'ab\'d3\'c3\'bb\'a7\'b5\'b1\'c7\'b0\'ce\'bb\'d6\'c3\'c9\'e8\'ce\'aa\'c6\'f0\'b5\'e3
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf5 \strokec5 \'a0\cf2 \strokec2 (!data.slat || !data.slon || !data.dlat || !data.dlon) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf6 \strokec6 // eslint-disable-next-line prefer-promise-reject-errors\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 reject(\cf4 \strokec4 '
+\f1 \'d0\'e8\'d2\'aa\'c6\'f0\'b5\'e3\'d6\'d5\'b5\'e3\'be\'ad\'ce\'b3\'b6\'c8
+\f0 '\cf2 \strokec2 );\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\'a0\cf7 \strokec7 else\cf5 \strokec5 \'a0\cf2 \strokec2 \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf5 \strokec5 \'a0\cf2 \strokec2 (data.sname) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 base += `&from=$\{data.sname\}`;\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 base += `&fromcoord=$\{data.slat\},$\{data.slon\}&tocoord=$\{data.dlat\},$\{data.dlon\}`;\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf5 \strokec5 \'a0\cf2 \strokec2 (data.dname) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 base += `&to=$\{data.dname\}`;\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 base += `&type=$\{data.mode ? data.mode.qMap ||\'a0\cf4 \strokec4 'drive'\cf5 \strokec5 \'a0\cf2 \strokec2 :\'a0\cf4 \strokec4 'drive'\cf2 \strokec2 \}`;\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 Linking.openURL(base)\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 .then(() => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf6 \strokec6 // resolve('
+\f1 \'b4\'f2\'bf\'aa\'b3\'c9\'b9\'a6
+\f0 ');\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \})\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 .\cf7 \strokec7 catch\cf2 \strokec2 (() => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf6 \strokec6 // eslint-disable-next-line prefer-promise-reject-errors\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 reject(\cf4 \strokec4 '
+\f1 \'d4\'dd\'ce\'de\'b0\'b2\'d7\'b0\'cc\'da\'d1\'b6\'b5\'d8\'cd\'bc
+\f0 '\cf2 \strokec2 );\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \};\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf6 \strokec6 /**\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * 
+\f1 \'b4\'f2\'bf\'aa\'b0\'d9\'b6\'c8\'b5\'d8\'cd\'bc\'b5\'bc\'ba\'bd
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{String\} data.sname - 
+\f1 \'c6\'f0\'b5\'e3\'c3\'fb\'d7\'d6
+\f0 .\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{String|number\} data.slon - 
+\f1 \'c6\'f0\'b5\'e3\'be\'ad\'b6\'c8
+\f0 .\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{String|number\} data.slat - 
+\f1 \'c6\'f0\'b5\'e3\'ce\'b3\'b6\'c8
+\f0 .\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{String\} data.dname - 
+\f1 \'d6\'d5\'b5\'e3\'c3\'fb\'d7\'d6
+\f0 .\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{String|number\} data.dlon - 
+\f1 \'d6\'d5\'b5\'e3\'be\'ad\'b6\'c8
+\f0 .\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param \{String|number\} data.dlat - 
+\f1 \'d6\'d5\'b5\'e3\'ce\'b3\'b6\'c8
+\f0 .\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param\{Mode\} data.mode 
+\f1 \'b5\'bc\'ba\'bd\'c0\'e0\'d0\'cd
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 * @param data\cf5 \strokec5 \
+\'a0\'a0\'a0\cf6 \strokec6 */\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 static openBaiDuMap = (data = \{\}) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 let base =\'a0\cf4 \strokec4 'baidumap://map/direction?'\cf2 \strokec2 ;\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf7 \strokec7 return\cf5 \strokec5 \'a0\cf7 \strokec7 new\cf5 \strokec5 \'a0\cf2 \strokec2 Promise((resolve, reject) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf6 \strokec6 // 
+\f1 \'c6\'f0\'b5\'e3\'be\'ad\'ce\'b3\'b6\'c8\'b2\'bb\'b4\'ab\'a3\'ac\'d4\'f2\'d7\'d4\'b6\'af\'bd\'ab\'d3\'c3\'bb\'a7\'b5\'b1\'c7\'b0\'ce\'bb\'d6\'c3\'c9\'e8\'ce\'aa\'c6\'f0\'b5\'e3
+\f0 \cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf5 \strokec5 \'a0\cf2 \strokec2 (!data.dlat || !data.dlon) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf6 \strokec6 // eslint-disable-next-line prefer-promise-reject-errors\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 reject(\cf4 \strokec4 '
+\f1 \'d0\'e8\'d2\'aa\'d6\'d5\'b5\'e3\'be\'ad\'ce\'b3\'b6\'c8
+\f0 '\cf2 \strokec2 );\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\'a0\cf7 \strokec7 else\cf5 \strokec5 \'a0\cf7 \strokec7 if\cf5 \strokec5 \'a0\cf2 \strokec2 (!data.dname && !data.dlon && !data.slat) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf6 \strokec6 // eslint-disable-next-line prefer-promise-reject-errors\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 reject(\cf4 \strokec4 '
+\f1 \'d0\'e8\'d2\'aa\'b4\'ab\'d6\'d5\'b5\'e3\'c3\'fb\'b3\'c6\'bb\'f2\'d5\'df\'be\'ad\'ce\'b3\'b6\'c8
+\f0 '\cf2 \strokec2 );\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\'a0\cf7 \strokec7 else\cf5 \strokec5 \'a0\cf2 \strokec2 \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf5 \strokec5 \'a0\cf2 \strokec2 (data.slon && data.slat) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 base += `origin=name:$\{data.sname\}|latlng:$\{data.slat\},$\{data.slon\}`;\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\'a0\cf7 \strokec7 else\cf5 \strokec5 \'a0\cf2 \strokec2 \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 base += `origin=$\{data.sname\}`;\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf5 \strokec5 \'a0\cf2 \strokec2 (data.dlon && data.dlat) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 base += `&destination=name:$\{data.dname\}|latlng:$\{data.dlat\},$\{data.dlon\}`;\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\'a0\cf7 \strokec7 else\cf5 \strokec5 \'a0\cf2 \strokec2 \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 base += `&destination=$\{data.dname\}`;\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 base += `&mode=$\{data.mode ? data.mode.baidu ||\'a0\cf4 \strokec4 'driving'\cf5 \strokec5 \'a0\cf2 \strokec2 :\'a0\cf4 \strokec4 'driving'\cf2 \strokec2 \}`;\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 Linking.openURL(base)\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 .then(() => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf6 \strokec6 // resolve('
+\f1 \'b4\'f2\'bf\'aa\'b3\'c9\'b9\'a6
+\f0 ');\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \})\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 .\cf7 \strokec7 catch\cf2 \strokec2 (() => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf6 \strokec6 // eslint-disable-next-line prefer-promise-reject-errors\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 reject(\cf4 \strokec4 '
+\f1 \'d4\'dd\'ce\'de\'b0\'b2\'d7\'b0\'b0\'d9\'b6\'c8\'b5\'d8\'cd\'bc
+\f0 '\cf2 \strokec2 );\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \};\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf2 \strokec2 static judgeOpenMap(index, slat, slon, sname, dlat, dlon, dname) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf5 \strokec5 \'a0\cf2 \strokec2 (index === 0) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 this\cf2 \strokec2 .baiduNavigation(slat, slon, sname, dlat, dlon, dname);\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\'a0\cf7 \strokec7 else\cf5 \strokec5 \'a0\cf7 \strokec7 if\cf5 \strokec5 \'a0\cf2 \strokec2 (index === 1) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 this\cf2 \strokec2 .aMapNavigation(slat, slon, sname, dlat, dlon, dname);\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\'a0\cf7 \strokec7 else\cf5 \strokec5 \'a0\cf2 \strokec2 \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 this\cf2 \strokec2 .qqMapNavigation(slat, slon, sname, dlat, dlon, dname);\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf2 \strokec2 static baiduNavigation(slat, slon, sname, dlat, dlon, dname) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 RoutePlan.isInstallBaiDuMap()\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 .then((res) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf5 \strokec5 \'a0\cf2 \strokec2 (!res) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 ToastUtil.center(\cf4 \strokec4 '
+\f1 \'c7\'eb\'b0\'b2\'d7\'b0\'b0\'d9\'b6\'c8\'b5\'d8\'cd\'bc
+\f0 '\cf2 \strokec2 );\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 return\cf2 \strokec2 ;\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 RoutePlan.openBaiDuMap(\{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 slat,\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 slon,\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 sname,\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 dlat,\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 dlon,\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 dname,\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 mode: RoutePlan.Mode.DRIVING\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \})\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf6 \strokec6 // eslint-disable-next-line no-alert\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 .then((result) => alert(result))\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf6 \strokec6 // eslint-disable-next-line no-alert\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 .\cf7 \strokec7 catch\cf2 \strokec2 ((err) => alert(err));\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \})\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 .\cf7 \strokec7 catch\cf2 \strokec2 ((err) =>\'a0\cf7 \strokec7 this\cf2 \strokec2 .alert(err));\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf2 \strokec2 static aMapNavigation(slat, slon, sname, dlat, dlon, dname) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 RoutePlan.isInstallAmap()\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 .then((res) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf5 \strokec5 \'a0\cf2 \strokec2 (!res) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 ToastUtil.center(\cf4 \strokec4 '
+\f1 \'c7\'eb\'b0\'b2\'d7\'b0\'b8\'df\'b5\'c2\'b5\'d8\'cd\'bc
+\f0 '\cf2 \strokec2 );\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 return\cf2 \strokec2 ;\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 RoutePlan.openAmap(\{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 slat,\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 slon,\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 sname,\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 dlat,\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 dlon,\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 dname,\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 mode: RoutePlan.Mode.DRIVING\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \})\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf6 \strokec6 // eslint-disable-next-line no-alert\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 .then((result) => alert(result))\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf6 \strokec6 // eslint-disable-next-line no-alert\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 .\cf7 \strokec7 catch\cf2 \strokec2 ((err) => alert(err));\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \})\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 .\cf7 \strokec7 catch\cf2 \strokec2 ((err) =>\'a0\cf7 \strokec7 this\cf2 \strokec2 .alert(err));\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\
+\'a0\'a0\cf2 \strokec2 static qqMapNavigation(slat, slon, sname, dlat, dlon, dname) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 RoutePlan.isInstallQQMap()\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 .then((res) => \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf5 \strokec5 \'a0\cf2 \strokec2 (!res) \{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 ToastUtil.center(\cf4 \strokec4 '
+\f1 \'c7\'eb\'b0\'b2\'d7\'b0\'cc\'da\'d1\'b6\'b5\'d8\'cd\'bc
+\f0 '\cf2 \strokec2 );\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 return\cf2 \strokec2 ;\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 RoutePlan.openQQMap(\{\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 slat,\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 slon,\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 sname,\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 dlat,\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 dlon,\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 dname,\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 mode: RoutePlan.Mode.DRIVING\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \})\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf6 \strokec6 // eslint-disable-next-line no-alert\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 .then((result) => alert(result))\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf6 \strokec6 // eslint-disable-next-line no-alert\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 .\cf7 \strokec7 catch\cf2 \strokec2 ((err) => alert(err));\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \})\cf5 \strokec5 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 .\cf7 \strokec7 catch\cf2 \strokec2 ((err) =>\'a0\cf7 \strokec7 this\cf2 \strokec2 .alert(err));\cf5 \strokec5 \
+\'a0\'a0\cf2 \strokec2 \}\cf5 \strokec5 \
+\cf2 \strokec2 \}\cf5 \strokec5 \
+}
