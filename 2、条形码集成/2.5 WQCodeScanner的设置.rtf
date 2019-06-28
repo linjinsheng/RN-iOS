@@ -1,0 +1,388 @@
+{\rtf1\ansi\ansicpg936\cocoartf1671\cocoasubrtf400
+{\fonttbl\f0\fnil\fcharset0 Consolas;\f1\fnil\fcharset134 PingFangSC-Regular;}
+{\colortbl;\red255\green255\blue255;\red109\green109\blue109;\red255\green255\blue255;\red38\green38\blue38;
+\red0\green0\blue0;\red15\green114\blue1;\red40\green82\blue135;\red3\green37\blue83;}
+{\*\expandedcolortbl;;\cssrgb\c50196\c50196\c50196;\cssrgb\c100000\c100000\c100000;\cssrgb\c20000\c20000\c20000;
+\cssrgb\c0\c0\c0;\cssrgb\c0\c50980\c0;\cssrgb\c20000\c40000\c60000;\cssrgb\c0\c20000\c40000;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww21660\viewh12220\viewkind0
+\deftab720
+\pard\pardeftab720\sl400\partightenfactor0
+
+\f0\fs28 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 #import <UIKit/UIKit.h>\cf4 \strokec4 \
+\cf5 \strokec5 typedef NS_ENUM(NSInteger, WQCodeScannerType) \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 WQCodeScannerTypeAll = 0,\'a0\'a0\'a0\cf6 \strokec6 //default, scan QRCode and barcode\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 WQCodeScannerTypeQRCode,\'a0\'a0\'a0\'a0\cf6 \strokec6 //scan QRCode only\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 WQCodeScannerTypeBarcode,\'a0\'a0\'a0\cf6 \strokec6 //scan barcode only\cf4 \strokec4 \
+\cf5 \strokec5 \};\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @interface WQCodeScanner : UIViewController\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @property (nonatomic, assign) WQCodeScannerType scanType;\cf4 \strokec4 \
+\cf5 \strokec5 @property (nonatomic, copy) NSString *titleStr;\cf4 \strokec4 \
+\cf5 \strokec5 @property (nonatomic, copy) NSString *tipStr;\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @property (nonatomic, copy) void(^resultBlock)(NSString *value);\cf4 \strokec4 \
+\cf5 \strokec5 @end\cf4 \strokec4 \
+\'a0\
+\cf2 \strokec2 #import "WQCodeScanner.h"\cf4 \strokec4 \
+\cf2 \strokec2 #import <AVFoundation/AVFoundation.h>\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @interface WQCodeScanner ()<AVCaptureMetadataOutputObjectsDelegate>\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @property (nonatomic, strong) AVCaptureSession *session;\cf4 \strokec4 \
+\cf5 \strokec5 @property (nonatomic, assign) BOOL isReading;\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @property (nonatomic, assign) UIStatusBarStyle originStatusBarStyle;\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @property (nonatomic, strong) UIImageView *lineImageView;\cf4 \strokec4 \
+\cf5 \strokec5 @property (nonatomic, strong) NSTimer *timer;\cf4 \strokec4 \
+\cf5 \strokec5 @property (nonatomic, strong) UILabel *tipLabel;\cf4 \strokec4 \
+\cf5 \strokec5 @property (nonatomic, strong) UILabel *titleLabel;\cf4 \strokec4 \
+\cf5 \strokec5 @property (nonatomic, assign) CGFloat width;\cf4 \strokec4 \
+\cf5 \strokec5 @property (nonatomic, assign) CGFloat height;\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @end\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @implementation WQCodeScanner\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 - (id)init \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 self = [\cf7 \strokec7 super\cf4 \strokec4 \'a0\cf5 \strokec5 init];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf4 \strokec4 \'a0\cf5 \strokec5 (self) \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 self.scanType = WQCodeScannerTypeAll;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf7 \strokec7 return\cf4 \strokec4 \'a0\cf5 \strokec5 self;\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 - (void)dealloc \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 _session = nil;\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 - (void)viewDidLoad \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [\cf7 \strokec7 super\cf4 \strokec4 \'a0\cf5 \strokec5 viewDidLoad];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [self loadCustomView];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf6 \strokec6 //
+\f1 \'c5\'d0\'b6\'cf\'c8\'a8\'cf\'de
+\f0 \cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 dispatch_async(dispatch_get_main_queue(), ^\{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf4 \strokec4 \'a0\cf5 \strokec5 (granted) \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [self loadScanView];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [self startRunning];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\'a0\cf7 \strokec7 else\cf4 \strokec4 \'a0\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 NSString *title = @\cf8 \strokec8 "
+\f1 \'c7\'eb\'d4\'da
+\f0 iPhone
+\f1 \'b5\'c4
+\f0 \'94
+\f1 \'c9\'e8\'d6\'c3
+\f0 -
+\f1 \'d2\'fe\'cb\'bd
+\f0 -
+\f1 \'cf\'e0\'bb\'fa
+\f0 \'93
+\f1 \'d1\'a1\'cf\'ee\'d6\'d0\'a3\'ac\'d4\'ca\'d0\'ed
+\f0 App
+\f1 \'b7\'c3\'ce\'ca\'c4\'e3\'b5\'c4\'cf\'e0\'bb\'fa
+\f0 "\cf5 \strokec5 ;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title message:@\cf8 \strokec8 ""\cf4 \strokec4 \'a0\cf5 \strokec5 delegate:nil cancelButtonTitle:@\cf8 \strokec8 "
+\f1 \'ba\'c3
+\f0 "\cf4 \strokec4 \'a0\cf5 \strokec5 otherButtonTitles:nil];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [alertView show];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 \});\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \}];\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 - (void)viewWillAppear:(BOOL)animated \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [\cf7 \strokec7 super\cf4 \strokec4 \'a0\cf5 \strokec5 viewWillAppear:animated];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf5 \strokec5 self.originStatusBarStyle = [UIApplication sharedApplication].statusBarStyle;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf5 \strokec5 NSString *codeStr = @\cf8 \strokec8 ""\cf5 \strokec5 ;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf7 \strokec7 switch\cf4 \strokec4 \'a0\cf5 \strokec5 (_scanType) \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 case\cf4 \strokec4 \'a0\cf5 \strokec5 WQCodeScannerTypeAll: codeStr = @\cf8 \strokec8 "
+\f1 \'b6\'fe\'ce\'ac\'c2\'eb
+\f0 /
+\f1 \'cc\'f5\'c2\'eb
+\f0 "\cf5 \strokec5 ;\'a0\cf7 \strokec7 break\cf5 \strokec5 ;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 case\cf4 \strokec4 \'a0\cf5 \strokec5 WQCodeScannerTypeQRCode: codeStr = @\cf8 \strokec8 "
+\f1 \'b6\'fe\'ce\'ac\'c2\'eb
+\f0 "\cf5 \strokec5 ;\'a0\cf7 \strokec7 break\cf5 \strokec5 ;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 case\cf4 \strokec4 \'a0\cf5 \strokec5 WQCodeScannerTypeBarcode: codeStr = @\cf8 \strokec8 "
+\f1 \'cc\'f5\'c2\'eb
+\f0 "\cf5 \strokec5 ;\'a0\cf7 \strokec7 break\cf5 \strokec5 ;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 default\cf5 \strokec5 :\'a0\cf7 \strokec7 break\cf5 \strokec5 ;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf6 \strokec6 //title\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf4 \strokec4 \'a0\cf5 \strokec5 (self.titleStr && self.titleStr.length > 0) \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 self.titleLabel.text = self.titleStr;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\'a0\cf7 \strokec7 else\cf4 \strokec4 \'a0\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 self.titleLabel.text = codeStr;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf6 \strokec6 //tip\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf4 \strokec4 \'a0\cf5 \strokec5 (self.tipStr && self.tipStr.length > 0) \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 self.tipLabel.text = self.tipStr;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\'a0\cf7 \strokec7 else\cf4 \strokec4 \'a0\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 self.tipLabel.text= [NSString stringWithFormat:@\cf8 \strokec8 "
+\f1 \'bd\'ab
+\f0 %@
+\f1 \'b7\'c5\'c8\'eb\'bf\'f2\'c4\'da\'a3\'ac\'bc\'b4\'bf\'c9\'d7\'d4\'b6\'af\'c9\'a8\'c3\'e8
+\f0 "\cf5 \strokec5 , codeStr];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [self startRunning];\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 - (void)viewWillDisappear:(BOOL)animated \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [[UIApplication sharedApplication] setStatusBarStyle:self.originStatusBarStyle animated:YES];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [self stopRunning];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [\cf7 \strokec7 super\cf4 \strokec4 \'a0\cf5 \strokec5 viewWillDisappear:animated];\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 - (void)loadScanView \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf6 \strokec6 //
+\f1 \'bb\'f1\'c8\'a1\'c9\'e3\'cf\'f1\'c9\'e8\'b1\'b8
+\f0 \cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf6 \strokec6 //
+\f1 \'b4\'b4\'bd\'a8\'ca\'e4\'c8\'eb\'c1\'f7
+\f0 \cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device error:nil];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf6 \strokec6 //
+\f1 \'b4\'b4\'bd\'a8\'ca\'e4\'b3\'f6\'c1\'f7
+\f0 \cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 AVCaptureMetadataOutput *output = [[AVCaptureMetadataOutput alloc]init];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf6 \strokec6 //
+\f1 \'c9\'e8\'d6\'c3\'b4\'fa\'c0\'ed
+\f0  
+\f1 \'d4\'da\'d6\'f7\'cf\'df\'b3\'cc\'c0\'ef\'cb\'a2\'d0\'c2
+\f0 \cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [output setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf6 \strokec6 //
+\f1 \'b3\'f5\'ca\'bc\'bb\'af\'c1\'b4\'bd\'d3\'b6\'d4\'cf\'f3
+\f0 \cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 self.session = [[AVCaptureSession alloc]init];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf6 \strokec6 //
+\f1 \'b8\'df\'d6\'ca\'c1\'bf\'b2\'c9\'bc\'af\'c2\'ca
+\f0 \cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [self.session setSessionPreset:AVCaptureSessionPresetHigh];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [self.session addInput:input];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [self.session addOutput:output];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf6 \strokec6 //
+\f1 \'c9\'e8\'d6\'c3\'c9\'a8\'c2\'eb\'d6\'a7\'b3\'d6\'b5\'c4\'b1\'e0\'c2\'eb\'b8\'f1\'ca\'bd
+\f0 \cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf7 \strokec7 switch\cf4 \strokec4 \'a0\cf5 \strokec5 (self.scanType) \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 case\cf4 \strokec4 \'a0\cf5 \strokec5 WQCodeScannerTypeAll:\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 output.metadataObjectTypes=@[AVMetadataObjectTypeQRCode,\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 AVMetadataObjectTypeEAN13Code,\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 AVMetadataObjectTypeEAN8Code,\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 AVMetadataObjectTypeUPCECode,\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 AVMetadataObjectTypeCode39Code,\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 AVMetadataObjectTypeCode39Mod43Code,\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 AVMetadataObjectTypeCode93Code,\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 AVMetadataObjectTypeCode128Code,\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 AVMetadataObjectTypePDF417Code];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 break\cf5 \strokec5 ;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 case\cf4 \strokec4 \'a0\cf5 \strokec5 WQCodeScannerTypeQRCode:\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 output.metadataObjectTypes=@[AVMetadataObjectTypeQRCode];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 break\cf5 \strokec5 ;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 case\cf4 \strokec4 \'a0\cf5 \strokec5 WQCodeScannerTypeBarcode:\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 output.metadataObjectTypes=@[AVMetadataObjectTypeEAN13Code,\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 AVMetadataObjectTypeEAN8Code,\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 AVMetadataObjectTypeUPCECode,\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 AVMetadataObjectTypeCode39Code,\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 AVMetadataObjectTypeCode39Mod43Code,\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 AVMetadataObjectTypeCode93Code,\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 AVMetadataObjectTypeCode128Code,\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 AVMetadataObjectTypePDF417Code];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 break\cf5 \strokec5 ;\cf4 \strokec4 \
+\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 default\cf5 \strokec5 :\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 break\cf5 \strokec5 ;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf5 \strokec5 AVCaptureVideoPreviewLayer *layer = [AVCaptureVideoPreviewLayer layerWithSession:self.session];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 layer.videoGravity = AVLayerVideoGravityResizeAspectFill;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 layer.frame = self.view.layer.bounds;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [self.view.layer insertSublayer:layer atIndex:0];\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 - (void)loadCustomView \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 self.view.backgroundColor = [UIColor blackColor];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf5 \strokec5 CGRect rc = [[UIScreen mainScreen] bounds];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf6 \strokec6 //rc.size.height -= 50;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 _width = rc.size.width * 0.1;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf6 \strokec6 //height = rc.size.height * 0.2;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 _height = (rc.size.height - (rc.size.width - _width * 2))/2;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf5 \strokec5 CGFloat alpha = 0.5;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf6 \strokec6 //
+\f1 \'d7\'ee\'c9\'cf\'b2\'bf
+\f0 view\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 UIView* upView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, rc.size.width, _height)];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 upView.alpha = alpha;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 upView.backgroundColor = [UIColor blackColor];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [self.view addSubview:upView];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf6 \strokec6 //
+\f1 \'d7\'f3\'b2\'e0\'b5\'c4
+\f0 view\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 UIView *leftView = [[UIView alloc] initWithFrame:CGRectMake(0, _height, _width, rc.size.height - _height * 2)];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 leftView.alpha = alpha;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 leftView.backgroundColor = [UIColor blackColor];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [self.view addSubview:leftView];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf6 \strokec6 //
+\f1 \'d6\'d0\'bc\'e4\'c9\'a8\'c3\'e8\'c7\'f8\'d3\'f2
+\f0 \cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 UIImageView *scanCropView=[[UIImageView alloc] initWithFrame:CGRectMake(_width, _height, rc.size.width - _width - _width, rc.size.height - _height - _height)];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 scanCropView.image=[UIImage imageNamed:@\cf8 \strokec8 "login_scan_code_border"\cf5 \strokec5 ];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 scanCropView. backgroundColor =[ UIColor clearColor ];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [ self.view addSubview :scanCropView];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf6 \strokec6 //
+\f1 \'d3\'d2\'b2\'e0\'b5\'c4
+\f0 view\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 UIView *rightView = [[UIView alloc] initWithFrame:CGRectMake(rc.size.width - _width, _height, _width, rc.size.height - _height * 2)];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 rightView.alpha = alpha;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 rightView.backgroundColor = [UIColor blackColor];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [self.view addSubview:rightView];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf6 \strokec6 //
+\f1 \'b5\'d7\'b2\'bf
+\f0 view\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 UIView *downView = [[UIView alloc] initWithFrame:CGRectMake(0, rc.size.height - _height, rc.size.width, _height)];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 downView.alpha = alpha;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 downView.backgroundColor = [UIColor blackColor];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [self.view addSubview:downView];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf6 \strokec6 //
+\f1 \'d3\'c3\'d3\'da\'cb\'b5\'c3\'f7\'b5\'c4
+\f0 label\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 self.tipLabel= [[UILabel alloc] init];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 self.tipLabel.backgroundColor = [UIColor clearColor];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 self.tipLabel.frame=CGRectMake(_width, rc.size.height - _height, rc.size.width - _width * 2, 40);\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 self.tipLabel.numberOfLines=0;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 self.tipLabel.textColor=[UIColor whiteColor];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 self.tipLabel.textAlignment = NSTextAlignmentCenter;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 self.tipLabel.font = [UIFont systemFontOfSize:15];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [self.view addSubview:self.tipLabel];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf6 \strokec6 //
+\f1 \'bb\'ad\'d6\'d0\'bc\'e4\'b5\'c4\'bb\'f9\'d7\'bc\'cf\'df
+\f0 \cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 self.lineImageView = [[UIImageView alloc] initWithFrame:CGRectMake (_width, _height, rc.size.width - 2 * _width, 5)];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 self.lineImageView.image = [UIImage imageNamed:@\cf8 \strokec8 "wq_code_scanner_line"\cf5 \strokec5 ];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [self.view addSubview:self.lineImageView];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf6 \strokec6 //
+\f1 \'b1\'ea\'cc\'e2
+\f0 \cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(50, 20, rc.size.width - 50 - 50, 44)];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 self.titleLabel.backgroundColor = [UIColor clearColor];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 self.titleLabel.textColor = [UIColor whiteColor];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 self.titleLabel.font = [UIFont boldSystemFontOfSize:18];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 self.titleLabel.textAlignment = NSTextAlignmentCenter;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [self.view addSubview:self.titleLabel];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf6 \strokec6 //
+\f1 \'b7\'b5\'bb\'d8
+\f0 \cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 20, 44, 44)];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [backButton setImage:[UIImage imageNamed:@\cf8 \strokec8 "wq_code_scanner_back"\cf5 \strokec5 ] forState:UIControlStateNormal];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [backButton addTarget:self action:@selector(pressBackButton) forControlEvents:UIControlEventTouchUpInside];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [self.view addSubview:backButton];\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 - (void)startRunning \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf4 \strokec4 \'a0\cf5 \strokec5 (self.session) \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 _isReading = YES;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [self.session startRunning];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 _timer=[NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(moveUpAndDownLine) userInfo:nil repeats: YES];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 - (void)stopRunning \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf4 \strokec4 \'a0\cf5 \strokec5 ([_timer isValid]) \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [_timer invalidate];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 _timer = nil ;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [self.session stopRunning];\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 - (void)pressBackButton \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 UINavigationController *nvc = self.navigationController;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf4 \strokec4 \'a0\cf5 \strokec5 (nvc) \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf4 \strokec4 \'a0\cf5 \strokec5 (nvc.viewControllers.count == 1) \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [nvc dismissViewControllerAnimated:YES completion:nil];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\'a0\cf7 \strokec7 else\cf4 \strokec4 \'a0\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [nvc popViewControllerAnimated:NO];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\'a0\cf7 \strokec7 else\cf4 \strokec4 \'a0\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [self dismissViewControllerAnimated:YES completion:nil];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\'a0\
+\cf6 \strokec6 //
+\f1 \'b6\'fe\'ce\'ac\'c2\'eb\'b5\'c4\'ba\'e1\'cf\'df\'d2\'c6\'b6\'af
+\f0 \cf4 \strokec4 \
+\cf5 \strokec5 - (void)moveUpAndDownLine \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 CGFloat Y = self.lineImageView.frame.origin.y;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf4 \strokec4 \'a0\cf5 \strokec5 (_height + self.lineImageView.frame.size.width - 5 == Y) \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [UIView beginAnimations: @\cf8 \strokec8 "asa"\cf4 \strokec4 \'a0\cf5 \strokec5 context:nil];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [UIView setAnimationDuration:1.5];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 CGRect frame = self.lineImageView.frame;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 frame.origin.y = _height;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 self.lineImageView.frame = frame;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [UIView commitAnimations];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\'a0\cf7 \strokec7 else\cf4 \strokec4 \'a0\cf7 \strokec7 if\cf4 \strokec4 \'a0\cf5 \strokec5 (_height == Y)\{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [UIView beginAnimations: @\cf8 \strokec8 "asa"\cf4 \strokec4 \'a0\cf5 \strokec5 context:nil];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [UIView setAnimationDuration:1.5];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 CGRect frame = self.lineImageView.frame;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 frame.origin.y = _height + self.lineImageView.frame.size.width - 5;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 self.lineImageView.frame = frame;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [UIView commitAnimations];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf2 \strokec2 #pragma mark - AVCaptureMetadataOutputObjectsDelegate\cf4 \strokec4 \
+\cf5 \strokec5 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf4 \strokec4 \'a0\cf5 \strokec5 (!_isReading) \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 return\cf5 \strokec5 ;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf4 \strokec4 \'a0\cf5 \strokec5 (metadataObjects.count > 0) \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 _isReading = NO;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 AVMetadataMachineReadableCodeObject *metadataObject = metadataObjects[0];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 NSString *result = metadataObject.stringValue;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 if\cf4 \strokec4 \'a0\cf5 \strokec5 (self.resultBlock) \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 self.resultBlock(result?:@\cf8 \strokec8 ""\cf5 \strokec5 );\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 [self pressBackButton];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @end\cf4 \strokec4 \
+}

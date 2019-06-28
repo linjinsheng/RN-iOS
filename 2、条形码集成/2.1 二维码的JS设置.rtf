@@ -1,0 +1,67 @@
+{\rtf1\ansi\ansicpg936\cocoartf1671\cocoasubrtf400
+{\fonttbl\f0\fnil\fcharset0 Consolas;\f1\fnil\fcharset134 PingFangSC-Regular;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red255\green255\blue255;\red38\green38\blue38;
+\red40\green82\blue135;\red3\green37\blue83;\red15\green114\blue1;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;\cssrgb\c100000\c100000\c100000;\cssrgb\c20000\c20000\c20000;
+\cssrgb\c20000\c40000\c60000;\cssrgb\c0\c20000\c40000;\cssrgb\c0\c50980\c0;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww21660\viewh12220\viewkind0
+\deftab720
+\pard\pardeftab720\sl400\partightenfactor0
+
+\f0\fs28 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 renderQcode() \{\cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 if\cf4 \strokec4 \'a0\cf2 \strokec2 (!\cf5 \strokec5 this\cf2 \strokec2 .state.pickupTypes[0])\'a0\cf5 \strokec5 return\cf4 \strokec4 \'a0\cf5 \strokec5 null\cf2 \strokec2 ;\cf4 \strokec4 \
+\'a0\'a0\cf2 \strokec2 let pickupType =\'a0\cf5 \strokec5 this\cf2 \strokec2 .state.pickupTypes[0];\cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 if\cf4 \strokec4 \'a0\cf2 \strokec2 (pickupType.value ===\'a0\cf6 \strokec6 '0'\cf2 \strokec2 )\'a0\cf5 \strokec5 return\cf4 \strokec4 \'a0\cf5 \strokec5 null\cf2 \strokec2 ;\'a0\cf7 \strokec7 //"value": "2",//0-
+\f1 \'b2\'bb\'cf\'d4\'ca\'be
+\f0 , 1-
+\f1 \'d1\'a1\'cc\'ee\'a3\'ac
+\f0 2-
+\f1 \'b1\'d8\'cc\'ee
+\f0 \cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 return\cf4 \strokec4 \'a0\cf2 \strokec2 (\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 <View>\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 <Text style=\{styles.title\}>\{`
+\f1 \'c9\'a8\'c3\'e8\'cc\'e1\'bb\'f5
+\f0 $\{pickupType.value ===\'a0\cf6 \strokec6 '1'\cf4 \strokec4 \'a0\cf2 \strokec2 ?\'a0\cf6 \strokec6 '(
+\f1 \'d1\'a1\'cc\'ee
+\f0 )'\cf4 \strokec4 \'a0\cf2 \strokec2 :\'a0\cf6 \strokec6 '(
+\f1 \'b1\'d8\'cc\'ee
+\f0 )'\cf2 \strokec2 \}`\}</Text>\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 <View style=\{styles.rowContent\}>\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 <TextInput\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 style=\{styles.inputRightImage\}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 maxLength=\{19\}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 underlineColorAndroid=\cf6 \strokec6 "transparent"\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 onChangeText=\{(text) => \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 this\cf2 \strokec2 .setState(\{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 logisticsOrderNo: text\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 placeholder=\cf6 \strokec6 "
+\f1 \'c7\'eb\'c9\'a8\'c3\'e8\'bb\'f2\'ca\'e4\'c8\'eb\'cc\'f5\'c2\'eb
+\f0 "\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 placeholderTextColor=\cf6 \strokec6 "#999999"\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 value=\{\cf5 \strokec5 this\cf2 \strokec2 .state.logisticsOrderNo\}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 />\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 <TouchableOpacity style=\{\{ width: setDp(40) \}\} onPress=\{() =>\'a0\cf5 \strokec5 this\cf2 \strokec2 .qrCode()\}>\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 <Image\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 style=\{\{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 width: setDp(20),\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 height: setDp(20)\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 source=\{scan\}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 />\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 </TouchableOpacity>\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 </View>\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 <View\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 style=\{\{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 height: 1,\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 backgroundColor:\'a0\cf6 \strokec6 '#DCDCDC'\cf2 \strokec2 ,\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 marginBottom: setDp(30)\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 />\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 </View>\cf4 \strokec4 \
+\'a0\'a0\cf2 \strokec2 );\cf4 \strokec4 \
+\cf2 \strokec2 \}\cf4 \strokec4 \
+}

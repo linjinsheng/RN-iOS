@@ -1,0 +1,58 @@
+{\rtf1\ansi\ansicpg936\cocoartf1671\cocoasubrtf400
+{\fonttbl\f0\fnil\fcharset0 Consolas;\f1\fnil\fcharset134 PingFangSC-Regular;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red255\green255\blue255;\red38\green38\blue38;
+\red40\green82\blue135;\red3\green37\blue83;\red15\green114\blue1;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;\cssrgb\c100000\c100000\c100000;\cssrgb\c20000\c20000\c20000;
+\cssrgb\c20000\c40000\c60000;\cssrgb\c0\c20000\c40000;\cssrgb\c0\c50980\c0;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww21660\viewh12220\viewkind0
+\deftab720
+\pard\pardeftab720\sl400\partightenfactor0
+
+\f0\fs28 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 UNSAFE_componentWillMount() \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 if\cf4 \strokec4 \'a0\cf2 \strokec2 (Platform.OS === ANDROID) \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 LocationModule.locationNow();\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 this\cf2 \strokec2 .getPickUpTypes();\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 this\cf2 \strokec2 .codeListener();\cf4 \strokec4 \
+\'a0\'a0\cf2 \strokec2 \}\cf4 \strokec4 \
+\'a0\
+\'a0\'a0\cf2 \strokec2 componentWillUnmount() \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 DeviceEventEmitter.removeListener(\cf6 \strokec6 'code'\cf2 \strokec2 );\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 if\cf4 \strokec4 \'a0\cf2 \strokec2 (\cf5 \strokec5 this\cf2 \strokec2 .listener) \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 this\cf2 \strokec2 .listener.remove();\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 this\cf2 \strokec2 .listener =\'a0\cf5 \strokec5 null\cf2 \strokec2 ;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\cf4 \strokec4 \
+\'a0\'a0\cf2 \strokec2 \}\cf4 \strokec4 \
+\'a0\
+\'a0\'a0\cf2 \strokec2 codeListener() \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 let eventEmitter =\'a0\cf5 \strokec5 new\cf4 \strokec4 \'a0\cf2 \strokec2 NativeEventEmitter(CaptureMoudle);\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 this\cf2 \strokec2 .listener = eventEmitter.addListener(\cf6 \strokec6 'code'\cf2 \strokec2 , (params) => \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 eventEmitter.removeListener(\cf6 \strokec6 'code'\cf2 \strokec2 );\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 this\cf2 \strokec2 .listener.remove();\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 this\cf2 \strokec2 .listener =\'a0\cf5 \strokec5 null\cf2 \strokec2 ;\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 if\cf4 \strokec4 \'a0\cf2 \strokec2 (params) \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf7 \strokec7 // console.log('
+\f1 \'d4\'da\'d0\'a1\'d6\'c7\'b8\'e7\'ca\'d5\'b5\'bd\'b5\'c4\'b6\'fe\'ce\'ac\'c2\'eb\'ca\'fd\'be\'dd\'ce\'aa
+\f0 ', params);\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 if\cf4 \strokec4 \'a0\cf2 \strokec2 (\cf5 \strokec5 this\cf2 \strokec2 .state.logisticsOrderNo && params !==\'a0\cf6 \strokec6 '(null)'\cf2 \strokec2 ) \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 this\cf2 \strokec2 .setState(\{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 logisticsOrderNo: params\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\'a0\cf5 \strokec5 else\cf4 \strokec4 \'a0\cf5 \strokec5 if\cf4 \strokec4 \'a0\cf2 \strokec2 (!\cf5 \strokec5 this\cf2 \strokec2 .state.logisticsOrderNo && params ===\'a0\cf6 \strokec6 '(null)'\cf2 \strokec2 ) \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 this\cf2 \strokec2 .setState(\{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 logisticsOrderNo:\'a0\cf6 \strokec6 ''\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\'a0\cf5 \strokec5 else\cf4 \strokec4 \'a0\cf5 \strokec5 if\cf4 \strokec4 \'a0\cf2 \strokec2 (!\cf5 \strokec5 this\cf2 \strokec2 .state.logisticsOrderNo && params !==\'a0\cf6 \strokec6 '(null)'\cf2 \strokec2 ) \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 this\cf2 \strokec2 .setState(\{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 logisticsOrderNo: params\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\'a0\cf5 \strokec5 else\cf4 \strokec4 \'a0\cf2 \strokec2 \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 ToastUtil.center(\cf6 \strokec6 '
+\f1 \'c9\'a8\'c3\'e8\'ca\'a7\'b0\'dc\'a3\'ac\'c7\'eb\'d6\'d8\'ca\'d4
+\f0 '\cf2 \strokec2 );\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\cf2 \strokec2 \}\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf2 \strokec2 \});\cf4 \strokec4 \
+\'a0\'a0\cf2 \strokec2 \}\cf4 \strokec4 \
+}

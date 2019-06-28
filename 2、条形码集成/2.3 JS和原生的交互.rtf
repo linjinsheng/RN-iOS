@@ -1,0 +1,108 @@
+{\rtf1\ansi\ansicpg936\cocoartf1671\cocoasubrtf400
+{\fonttbl\f0\fnil\fcharset0 Consolas;\f1\fnil\fcharset134 PingFangSC-Regular;}
+{\colortbl;\red255\green255\blue255;\red109\green109\blue109;\red255\green255\blue255;\red38\green38\blue38;
+\red0\green0\blue0;\red3\green37\blue83;\red40\green82\blue135;\red15\green114\blue1;}
+{\*\expandedcolortbl;;\cssrgb\c50196\c50196\c50196;\cssrgb\c100000\c100000\c100000;\cssrgb\c20000\c20000\c20000;
+\cssrgb\c0\c0\c0;\cssrgb\c0\c20000\c40000;\cssrgb\c20000\c40000\c60000;\cssrgb\c0\c50980\c0;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww21660\viewh12220\viewkind0
+\deftab720
+\pard\pardeftab720\sl400\partightenfactor0
+
+\f0\fs28 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 #import "CaptureMoudle.h"\cf4 \strokec4 \
+\cf2 \strokec2 #import "QRCodePicker.h"\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 NSString *const kCaptureName = @\cf6 \strokec6 "code"\cf5 \strokec5 ;\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @interface CaptureMoudle ()\cf4 \strokec4 \
+\cf5 \strokec5 @property(strong,nonatomic)QRCodePicker *qrCodePicker;\cf4 \strokec4 \
+\cf5 \strokec5 @end\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @implementation CaptureMoudle\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 RCT_EXPORT_MODULE();\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 + (id)allocWithZone:(struct _NSZone *)zone \{\cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 static CaptureMoudle *sharedInstance = nil;\cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 static dispatch_once_t onceToken;\cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 dispatch_once(&onceToken, ^\{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 sharedInstance = [\cf7 \strokec7 super\cf4 \strokec4 \'a0\cf5 \strokec5 allocWithZone:zone];\cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 \});\cf4 \strokec4 \
+\'a0\'a0\cf7 \strokec7 return\cf4 \strokec4 \'a0\cf5 \strokec5 sharedInstance;\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 - (instancetype)init \{\cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 self = [\cf7 \strokec7 super\cf4 \strokec4 \'a0\cf5 \strokec5 init];\cf4 \strokec4 \
+\'a0\'a0\cf7 \strokec7 if\cf4 \strokec4 \'a0\cf5 \strokec5 (self) \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [defaultCenter removeObserver:self];\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 [defaultCenter addObserver:self\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 selector:@selector(sendCustomEvent:)\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 name:@\cf6 \strokec6 "sendCustomEventNotification"\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf5 \strokec5 object:nil];\cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\'a0\cf7 \strokec7 return\cf4 \strokec4 \'a0\cf5 \strokec5 self;\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf2 \strokec2 #pragma mark --
+\f1 \'cf\'fa\'bb\'d9\'cd\'a8\'d6\'aa
+\f0 \cf4 \strokec4 \
+\cf5 \strokec5 - (void)dealloc\cf4 \strokec4 \
+\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 [[NSNotificationCenter defaultCenter] removeObserver:self name:@\cf6 \strokec6 "sendCustomEventNotification"\cf4 \strokec4 \'a0\cf5 \strokec5 object:nil];\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf8 \strokec8 // 
+\f1 \'bd\'d3\'ca\'d5\'cd\'a8\'d6\'aa\'b5\'c4\'b7\'bd\'b7\'a8\'a3\'ac\'bd\'d3\'ca\'d5\'b5\'bd\'cd\'a8\'d6\'aa\'ba\'f3\'b7\'a2\'cb\'cd\'ca\'c2\'bc\'fe\'b5\'bd
+\f0 RN
+\f1 \'b6\'cb\'a1\'a3
+\f0 RN
+\f1 \'b6\'cb\'bd\'d3\'ca\'d5\'b5\'bd\'ca\'c2\'bc\'fe\'ba\'f3\'bf\'c9\'d2\'d4\'bd\'f8\'d0\'d0\'cf\'e0\'d3\'a6\'b5\'c4\'c2\'df\'bc\'ad\'b4\'a6\'c0\'ed\'bb\'f2\'bd\'e7\'c3\'e6\'cc\'f8\'d7\'aa
+\f0 \cf4 \strokec4 \
+\cf5 \strokec5 - (void)sendCustomEvent:(NSNotification *)noti \{\cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 NSString *qrCodeValue = [NSString stringWithFormat:@\cf6 \strokec6 "%@"\cf5 \strokec5 ,noti.userInfo[@\cf6 \strokec6 "qrCodeValue"\cf5 \strokec5 ]];\cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 NSLog(@\cf6 \strokec6 "
+\f1 \'b7\'a2\'b8\'f8
+\f0 RN
+\f1 \'b5\'c4\'cc\'f5\'d0\'ce\'c2\'eb\'d7\'d6\'b7\'fb\'b4\'ae\'ce\'aa
+\f0 %@"\cf5 \strokec5 ,qrCodeValue);\cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 [self sendEventWithName:kCaptureName body:qrCodeValue];\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf8 \strokec8 // 
+\f1 \'d6\'d8\'d0\'b4\'b7\'bd\'b7\'a8\'a3\'ac\'b6\'a8\'d2\'e5\'d6\'a7\'b3\'d6\'b5\'c4\'ca\'c2\'bc\'fe\'bc\'af\'ba\'cf
+\f0 \cf4 \strokec4 \
+\cf5 \strokec5 - (NSArray<NSString *> *)supportedEvents \{\cf4 \strokec4 \
+\'a0\'a0\cf7 \strokec7 return\cf4 \strokec4 \'a0\cf5 \strokec5 @[kCaptureName];\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf8 \strokec8 // 
+\f1 \'bd\'d3\'ca\'d5\'b4\'ab\'b9\'fd\'c0\'b4\'b5\'c4
+\f0  selectTag\cf4 \strokec4 \
+\cf5 \strokec5 RCT_EXPORT_METHOD(openNative:(NSInteger)selectTag)\{\cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 NSLog(@\cf6 \strokec6 "
+\f1 \'b4\'ab\'b9\'fd\'c0\'b4\'b5\'c4
+\f0 selectTag
+\f1 \'ce\'aa
+\f0 %ld"\cf5 \strokec5 , selectTag);\cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 UIViewController *root = [[[[UIApplication sharedApplication] delegate] window] rootViewController];\cf4 \strokec4 \
+\'a0\'a0\cf7 \strokec7 while\cf4 \strokec4 \'a0\cf5 \strokec5 (root.presentedViewController != nil) \{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 root = root.presentedViewController;\cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 [[self _qrCodePicker:root] selectQRCodeMethod];\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 -(QRCodePicker*)_qrCodePicker:(UIViewController*)vc\{\cf4 \strokec4 \
+\'a0\'a0\cf7 \strokec7 if\cf5 \strokec5 (self.qrCodePicker == nil)\{\cf4 \strokec4 \
+\'a0\'a0\'a0\'a0\cf5 \strokec5 self.qrCodePicker = [[QRCodePicker alloc]initWithViewController:vc];\cf4 \strokec4 \
+\'a0\'a0\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\'a0\cf7 \strokec7 return\cf4 \strokec4 \'a0\cf5 \strokec5 self.qrCodePicker;\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 - (dispatch_queue_t)methodQueue\cf4 \strokec4 \
+\cf5 \strokec5 \{\cf4 \strokec4 \
+\'a0\'a0\cf7 \strokec7 return\cf4 \strokec4 \'a0\cf5 \strokec5 dispatch_get_main_queue();\cf4 \strokec4 \
+\cf5 \strokec5 \}\cf4 \strokec4 \
+\'a0\
+\cf5 \strokec5 @end\cf4 \strokec4 \
+}
